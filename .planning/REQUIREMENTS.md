@@ -107,13 +107,46 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| *(populated during roadmap creation)* | | |
+| DISC-01 | Phase 1 | Pending |
+| DISC-02 | Phase 1 | Pending |
+| DISC-03 | Phase 1 | Pending |
+| ENRI-01 | Phase 1 | Pending |
+| ENRI-02 | Phase 1 | Pending |
+| SCOR-01 | Phase 1 | Pending |
+| SCOR-02 | Phase 1 | Pending |
+| SCOR-03 | Phase 1 | Pending |
+| SCOR-04 | Phase 1 | Pending |
+| DATA-01 | Phase 1 | Pending |
+| DATA-02 | Phase 1 | Pending |
+| CCTX-01 | Phase 2 | Pending |
+| CCTX-02 | Phase 2 | Pending |
+| CCTX-03 | Phase 2 | Pending |
+| CCTX-04 | Phase 2 | Pending |
+| CCTX-05 | Phase 2 | Pending |
+| VOIC-01 | Phase 3 | Pending |
+| VOIC-02 | Phase 3 | Pending |
+| VOIC-03 | Phase 3 | Pending |
+| VOIC-04 | Phase 3 | Pending |
+| VOIC-05 | Phase 3 | Pending |
+| VOIC-06 | Phase 3 | Pending |
+| VOIC-07 | Phase 3 | Pending |
+| OUTC-01 | Phase 3 | Pending |
+| OUTC-02 | Phase 3 | Pending |
+| OUTC-03 | Phase 3 | Pending |
+| DEMO-01 | Phase 4 | Pending |
+| DEMO-02 | Phase 4 | Pending |
+| DEMO-03 | Phase 4 | Pending |
+| DEMO-04 | Phase 4 | Pending |
+| DEMO-05 | Phase 4 | Pending |
+| DEMO-06 | Phase 4 | Pending |
+| DEMO-07 | Phase 4 | Pending |
+| DEMO-08 | Phase 4 | Pending |
 
 **Coverage:**
-- v1 requirements: 27 total
-- Mapped to phases: 0
-- Unmapped: 27
+- v1 requirements: 34 total (note: initial estimate of 27 was pre-list; actual count is 34)
+- Mapped to phases: 34
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-04-20*
-*Last updated: 2026-04-20 after initial definition*
+*Last updated: 2026-04-20 after roadmap creation*
