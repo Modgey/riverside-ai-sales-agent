@@ -26,7 +26,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Success Criteria** (what must be TRUE):
   1. Running the pipeline script produces a populated Airtable base with at least 10 enriched prospect rows visible via shareable link, no manual steps required
   2. Each row contains host name, company name, company size, work email, episode cadence, recent episode topic, and a numeric score
-  3. Prospects outside the 100-1000 employee range, missing contact info, or with inactive shows are absent from the output (hard filter working)
+  3. Prospects outside the 50-2000 employee range, missing contact info, or with inactive shows are absent from the output (hard filter working)
   4. At least one prospect is marked as skipped because they appear on the Riverside customer skip list
   5. Airtable base is shareable via link and a reviewer can inspect all fields without running any code
 **Plans**: 3 plans
