@@ -29,7 +29,11 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Prospects outside the 100-1000 employee range, missing contact info, or with inactive shows are absent from the output (hard filter working)
   4. At least one prospect is marked as skipped because they appear on the Riverside customer skip list
   5. Airtable base is shareable via link and a reviewer can inspect all fields without running any code
-**Plans**: TBD
+**Plans**: 3 plans
+Plans:
+- [ ] 01-01-PLAN.md -- Discovery and enrichment modules (Podcast Index search, RSS parsing, Apollo enrichment)
+- [ ] 01-02-PLAN.md -- Scoring, filtering, skip list, and cheat sheet assembly
+- [ ] 01-03-PLAN.md -- Airtable upload, pipeline orchestrator, and end-to-end verification
 
 ### Phase 2: Call Context Generation
 **Goal**: Every scored prospect in Airtable has a pre-generated, LLM-produced call context block ready for the call runner
@@ -71,7 +75,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Prospect Pipeline | 0/TBD | Not started | - |
+| 1. Prospect Pipeline | 0/3 | Planning complete | - |
 | 2. Call Context Generation | 0/TBD | Not started | - |
 | 3. Voice Agent and Outcome Handling | 0/TBD | Not started | - |
 | 4. Demos and Write-up | 0/TBD | Not started | - |
