@@ -25,3 +25,6 @@ class ProspectDict(TypedDict, total=False):
     last_name: Optional[str]
     language: Optional[str]
     qualification_status: Optional[str]
+    episode_details: Optional[list]      # list of episode dicts (title, description, guest_name, published)
+    company_summary: Optional[str]       # LLM-refined company summary from homepage
+    podcast_themes: Optional[str]        # LLM-generated podcast theme summary
