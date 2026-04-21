@@ -1,0 +1,9 @@
+{
+  "model": "gemma4:e4b",
+  "temperature": 0,
+  "system_prompt": "Given a podcast's episode titles, episode descriptions, and raw company homepage text, return a JSON object with exactly two keys:\n- podcast_themes: a 2-3 sentence summary of what this podcast covers and who it is for\n- company_summary: a 2-3 sentence description of the company based on the homepage text. If homepage text is empty, return an empty string.\nReturn ONLY valid JSON. No markdown, no explanation.",
+  "response_schema": {
+    "podcast_themes": "string, 2-3 sentence summary of podcast themes and target audience",
+    "company_summary": "string, 2-3 sentence company description from homepage text"
+  }
+}
