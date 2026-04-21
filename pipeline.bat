@@ -19,14 +19,14 @@ echo  ================================================
 echo   Riverside Prospect Pipeline
 echo  ================================================
 echo.
-echo   1. discover   Search Podcast Index + parse RSS
-echo   2. qualify    AI classification (person/org, language)
-echo   3. enrich     Enrich qualified prospects via Prospeo
-echo   4. score      Apply filters + scoring
-echo   5. upload     Push to Airtable
+echo   1. discover   Find podcasts via Podcast Index + parse RSS
+echo   2. qualify    AI cleans names, detects language, filters orgs
+echo   3. enrich     Look up emails + company data (Prospeo)
+echo   4. score      Rank prospects by fit + activity
+echo   5. upload     Push final list to Airtable
 echo.
-echo   6. all        Run all steps end-to-end
-echo   7. status     Show current pipeline state
+echo   6. all        Run full pipeline (1-5) end-to-end
+echo   7. status     Show what's been run so far
 echo   0. exit
 echo.
 echo  ================================================

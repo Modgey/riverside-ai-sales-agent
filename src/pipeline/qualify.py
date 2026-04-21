@@ -1,12 +1,23 @@
-"""AI qualification step: classifies prospects via Gemma 3 4B (Ollama) with heuristic fallback."""
+"""AI qualification step: classifies prospects via LLM (Ollama) with heuristic fallback."""
 
 import json
+import os
 
 import ollama
 from pydantic import BaseModel
 
 from pipeline.enrich import is_hosting_platform, looks_like_person_name, split_name
 from pipeline.models import ProspectDict
+
+CONFIG_PATH = os.path.join(os.path.dirname(__file__), "prompts", "qualify.json")
+
+
+def load_config() -> dict:
+    with open(CONFIG_PATH, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+CONFIG = load_config()
 
 
 class QualifyResponse(BaseModel):
@@ -17,20 +28,7 @@ class QualifyResponse(BaseModel):
     is_hosting_domain: bool
 
 
-SYSTEM_PROMPT = (
-    "You classify podcast prospects. Given host_name, podcast_name, and domain, determine:\n"
-    "1. Whether host_name is a real person (not an org name, show name, or multiple people).\n"
-    "2. Extract first_name and last_name from host_name (best effort, empty string if unclear).\n"
-    "3. The primary language of podcast_name (return ISO 639-1 two-letter code, default 'en').\n"
-    "4. Whether domain is a podcast hosting platform (not the podcast's own website).\n"
-    "Return ONLY valid JSON matching this schema: "
-    '{"is_person": bool, "first_name": str, "last_name": str, "language": str, "is_hosting_domain": bool}. '
-    "No markdown, no explanation."
-)
-
-
 def call_ollama(host_name: str, podcast_name: str, domain: str) -> QualifyResponse | None:
-    """Call Gemma 3 4B via Ollama to classify a prospect. Returns None on any failure."""
     user_msg = json.dumps({
         "host_name": host_name,
         "podcast_name": podcast_name,
@@ -38,13 +36,13 @@ def call_ollama(host_name: str, podcast_name: str, domain: str) -> QualifyRespon
     })
     try:
         response = ollama.chat(
-            model="gemma3:4b",
+            model=CONFIG["model"],
             messages=[
-                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "system", "content": CONFIG["system_prompt"]},
                 {"role": "user", "content": user_msg},
             ],
             format="json",
-            options={"temperature": 0},
+            options={"temperature": CONFIG["temperature"]},
         )
         parsed = json.loads(response["message"]["content"])
         return QualifyResponse(**parsed)
@@ -53,7 +51,6 @@ def call_ollama(host_name: str, podcast_name: str, domain: str) -> QualifyRespon
 
 
 def heuristic_fallback(host_name: str, domain: str) -> QualifyResponse:
-    """Fall back to rule-based classification when Ollama is unavailable."""
     is_person = looks_like_person_name(host_name)
     first_name, last_name = split_name(host_name) if is_person else ("", "")
     is_hosting = is_hosting_platform(domain)
@@ -67,10 +64,6 @@ def heuristic_fallback(host_name: str, domain: str) -> QualifyResponse:
 
 
 def qualify_prospect(prospect: ProspectDict) -> tuple[ProspectDict, bool]:
-    """Classify a single prospect and set qualification fields.
-
-    Returns (prospect, used_fallback) tuple.
-    """
     rss_url = prospect.get("rss_url", "").lower()
     if "riverside.fm" in rss_url:
         prospect["qualification_status"] = "existing_riverside_customer"
@@ -84,9 +77,11 @@ def qualify_prospect(prospect: ProspectDict) -> tuple[ProspectDict, bool]:
     result = call_ollama(host_name, podcast_name, domain)
     used_fallback = False
 
-    if result is None:
-        # One retry
+    retries = CONFIG.get("max_retries", 1)
+    attempts = 0
+    while result is None and attempts < retries:
         result = call_ollama(host_name, podcast_name, domain)
+        attempts += 1
 
     if result is None:
         result = heuristic_fallback(host_name, domain)
@@ -94,7 +89,6 @@ def qualify_prospect(prospect: ProspectDict) -> tuple[ProspectDict, bool]:
         safe_name = podcast_name.encode("ascii", "replace").decode()
         print(f"  Warning: Ollama failed for '{safe_name}', using heuristic fallback")
 
-    # Apply qualification logic
     if not result.is_person:
         prospect["qualification_status"] = "disqualified"
         prospect["disqualify_reason"] = "org_not_person"
@@ -116,11 +110,12 @@ def qualify_prospect(prospect: ProspectDict) -> tuple[ProspectDict, bool]:
 
 
 def qualify_prospects(prospects: list[ProspectDict]) -> list[ProspectDict]:
-    """Public entry point. Qualifies all prospects, prints progress and summary."""
     total = len(prospects)
     counts = {"qualified": 0, "disqualified": 0, "existing_riverside_customer": 0}
     reasons = {}
     fallback_count = 0
+
+    print(f"  Using model: {CONFIG['model']} (temperature={CONFIG['temperature']}, max_retries={CONFIG.get('max_retries', 1)})")
 
     for i, prospect in enumerate(prospects):
         prospect, used_fallback = qualify_prospect(prospect)
@@ -137,7 +132,6 @@ def qualify_prospects(prospects: list[ProspectDict]) -> list[ProspectDict]:
         if (i + 1) % 10 == 0:
             print(f"  Qualifying... {i + 1}/{total}")
 
-    # Print summary
     print(f"\n  Qualification complete:")
     print(f"    Qualified:          {counts.get('qualified', 0)}")
     print(f"    Disqualified:       {counts.get('disqualified', 0)}")

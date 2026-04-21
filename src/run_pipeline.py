@@ -40,6 +40,8 @@ def load(step_name: str) -> list[dict]:
 def run_discover():
     print("\n[Stage 1/5] Discovery")
     print("-" * 40)
+    print("  Searching Podcast Index for podcasts matching our ICP...")
+    print("  Parsing RSS feeds to extract host names, domains, cadence...\n")
     raw = discover_prospects()
     save("discover", raw)
     print(f"\n  Done: {len(raw)} candidates discovered")
@@ -47,15 +49,18 @@ def run_discover():
 
 
 def run_qualify():
-    print("\n[Stage 2/5] Qualification")
+    print("\n[Stage 2/5] Qualification (AI)")
     print("-" * 40)
+    print("  Classifying each prospect with a local LLM (Ollama).")
+    print("  Checking: is the host a real person? What language? Is the domain legit?\n")
     raw = load("discover")
     qualified = qualify_prospects(raw)
     save("qualified", qualified)
     q_count = sum(1 for p in qualified if p.get("qualification_status") == "qualified")
     dq_count = sum(1 for p in qualified if p.get("qualification_status") == "disqualified")
     rs_count = sum(1 for p in qualified if p.get("qualification_status") == "existing_riverside_customer")
-    print(f"\n  Done: {q_count} qualified, {dq_count} disqualified, {rs_count} riverside customers")
+    print(f"\n  Done: {q_count} qualified, {dq_count} disqualified, {rs_count} existing Riverside customers")
+    print(f"  Only the {q_count} qualified prospects will be sent to enrichment.")
     return qualified
 
 
@@ -63,21 +68,23 @@ def run_enrich():
     print("\n[Stage 3/5] Enrichment")
     print("-" * 40)
     raw = load("qualified")
-    # Only enrich prospects that passed qualification
     qualified_only = [p for p in raw if p.get("qualification_status") == "qualified"]
     disqualified = [p for p in raw if p.get("qualification_status") != "qualified"]
+    print(f"  Enriching {len(qualified_only)} qualified prospects via Prospeo API...")
+    print(f"  ({len(disqualified)} disqualified prospects skipped, saving API credits)\n")
     enriched = enrich_prospects(qualified_only)
     all_prospects = enriched + disqualified
     save("enrich", all_prospects)
     enriched_ok = sum(1 for p in all_prospects if p.get("enrichment_status") == "enriched")
     enriched_fail = sum(1 for p in all_prospects if p.get("enrichment_status") == "enrichment-failed")
-    print(f"\n  Done: {enriched_ok} enriched, {enriched_fail} failed")
+    print(f"\n  Done: {enriched_ok} enriched with email/company data, {enriched_fail} no match found")
     return all_prospects
 
 
 def run_score():
     print("\n[Stage 4/5] Scoring")
     print("-" * 40)
+    print("  Ranking prospects by episode count, cadence, category fit...\n")
     enriched = load("enrich")
     scored = score_and_filter(enriched, skip_list_path=os.path.join(os.path.dirname(__file__), "skip_list.json"))
     save("score", scored)
@@ -85,13 +92,14 @@ def run_score():
     below = sum(1 for p in scored if p["status"] == "below-threshold")
     disqualified = sum(1 for p in scored if p["status"] == "disqualified")
     skipped = sum(1 for p in scored if p["status"] == "skipped")
-    print(f"\n  Done: {call_ready} call-ready, {below} below-threshold, {disqualified} disqualified, {skipped} skipped")
+    print(f"\n  Done: {call_ready} call-ready, {below} below threshold, {disqualified} disqualified, {skipped} skipped")
     return scored
 
 
 def run_upload():
     print("\n[Stage 5/5] Upload to Airtable")
     print("-" * 40)
+    print("  Pushing scored prospects to Airtable for review...\n")
     scored = load("score")
     upload_to_airtable(scored)
     print("\n  Done: Airtable populated")

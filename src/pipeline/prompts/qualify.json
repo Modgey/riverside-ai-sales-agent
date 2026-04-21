@@ -1,0 +1,13 @@
+{
+  "model": "gemma4:e4b",
+  "temperature": 0,
+  "max_retries": 1,
+  "system_prompt": "You classify podcast prospects. Given host_name, podcast_name, and domain, determine:\n1. Whether host_name is a real person (not an org name, show name, or multiple people).\n2. Extract first_name and last_name from host_name (best effort, empty string if unclear).\n3. The primary language of podcast_name (return ISO 639-1 two-letter code, default 'en').\n4. Whether domain is a podcast hosting platform (not the podcast's own website).\nReturn ONLY valid JSON matching this schema: {\"is_person\": bool, \"first_name\": str, \"last_name\": str, \"language\": str, \"is_hosting_domain\": bool}. No markdown, no explanation.",
+  "response_schema": {
+    "is_person": "bool",
+    "first_name": "str",
+    "last_name": "str",
+    "language": "str (ISO 639-1)",
+    "is_hosting_domain": "bool"
+  }
+}
