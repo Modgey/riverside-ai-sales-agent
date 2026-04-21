@@ -9,9 +9,10 @@ from pipeline.qualify import qualify_prospects
 from pipeline.enrich import enrich_prospects
 from pipeline.score import score_and_filter
 from pipeline.upload import upload_to_airtable
+from pipeline.deep_enrich import deep_enrich_prospects
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
-STEPS = ["discover", "qualify", "enrich", "score", "upload"]
+STEPS = ["discover", "qualify", "enrich", "score", "deep_enrich", "upload"]
 
 
 def ensure_data_dir():
@@ -38,7 +39,7 @@ def load(step_name: str) -> list[dict]:
 
 
 def run_discover():
-    print("\n[Stage 1/5] Discovery")
+    print("\n[Stage 1/6] Discovery")
     print("-" * 40)
     print("  Searching Podcast Index for podcasts matching our ICP...")
     print("  Parsing RSS feeds to extract host names, domains, cadence...\n")
@@ -49,7 +50,7 @@ def run_discover():
 
 
 def run_qualify():
-    print("\n[Stage 2/5] Qualification (AI)")
+    print("\n[Stage 2/6] Qualification (AI)")
     print("-" * 40)
     print("  Classifying each prospect with a local LLM (Ollama).")
     print("  Checking: is the host a real person? What language? Is the domain legit?\n")
@@ -65,7 +66,7 @@ def run_qualify():
 
 
 def run_enrich():
-    print("\n[Stage 3/5] Enrichment")
+    print("\n[Stage 3/6] Enrichment")
     print("-" * 40)
     raw = load("qualified")
     qualified_only = [p for p in raw if p.get("qualification_status") == "qualified"]
@@ -82,7 +83,7 @@ def run_enrich():
 
 
 def run_score():
-    print("\n[Stage 4/5] Scoring")
+    print("\n[Stage 4/6] Scoring")
     print("-" * 40)
     print("  Ranking prospects by episode count, cadence, category fit...\n")
     enriched = load("enrich")
@@ -96,12 +97,28 @@ def run_score():
     return scored
 
 
+def run_deep_enrich():
+    print("\n[Stage 5/6] Deep Enrichment")
+    print("-" * 40)
+    print("  Pulling episode details, company pages, and LLM theme summaries for call-ready prospects...\n")
+    scored = load("score")
+    enriched = deep_enrich_prospects(scored)
+    save("deep_enrich", enriched)
+    call_ready = [p for p in enriched if p.get("status") == "call-ready"]
+    with_themes = sum(1 for p in call_ready if p.get("podcast_themes"))
+    with_company = sum(1 for p in call_ready if p.get("company_summary"))
+    print(f"\n  Done: {len(call_ready)} call-ready prospects deep enriched")
+    print(f"    Podcast themes: {with_themes}/{len(call_ready)}")
+    print(f"    Company summaries: {with_company}/{len(call_ready)}")
+    return enriched
+
+
 def run_upload():
-    print("\n[Stage 5/5] Upload to Airtable")
+    print("\n[Stage 6/6] Upload to Airtable")
     print("-" * 40)
     print("  Pushing scored prospects to Airtable for review...\n")
-    scored = load("score")
-    upload_to_airtable(scored)
+    prospects = load("deep_enrich")
+    upload_to_airtable(prospects)
     print("\n  Done: Airtable populated")
 
 
@@ -113,6 +130,7 @@ def run_all():
     run_qualify()
     run_enrich()
     run_score()
+    run_deep_enrich()
     run_upload()
     print("\n" + "=" * 60)
     print("PIPELINE COMPLETE")
@@ -127,6 +145,7 @@ def print_usage():
     print("  qualify   - AI classification via Ollama (person/org, language, domain)")
     print("  enrich    - Enrich qualified prospects via Prospeo API")
     print("  score     - Apply hard filters + weighted scoring")
+    print("  deep_enrich - Pull episode details, company pages, LLM summaries for call-ready prospects")
     print("  upload    - Push scored prospects to Airtable")
     print()
     print("  all       - Run all steps end-to-end (default)")
@@ -159,6 +178,11 @@ def print_status():
                 disqualified = sum(1 for p in data if p.get("status") == "disqualified")
                 skipped = sum(1 for p in data if p.get("status") == "skipped")
                 print(f"  {step:10} : {len(data):4} records ({size_kb:.1f} KB) | {call_ready} ready, {below} below, {disqualified} disq, {skipped} skip")
+            elif step == "deep_enrich":
+                call_ready = [p for p in data if p.get("status") == "call-ready"]
+                with_themes = sum(1 for p in call_ready if p.get("podcast_themes"))
+                with_company = sum(1 for p in call_ready if p.get("company_summary"))
+                print(f"  {step:10} : {len(data):4} records ({size_kb:.1f} KB) | {len(call_ready)} call-ready, {with_themes} themes, {with_company} summaries")
             elif step == "enrich":
                 enriched_ok = sum(1 for p in data if p.get("enrichment_status") == "enriched")
                 failed = sum(1 for p in data if p.get("enrichment_status") == "enrichment-failed")
@@ -181,6 +205,8 @@ if __name__ == "__main__":
         run_enrich()
     elif step == "score":
         run_score()
+    elif step == "deep_enrich":
+        run_deep_enrich()
     elif step == "upload":
         run_upload()
     elif step == "all":
