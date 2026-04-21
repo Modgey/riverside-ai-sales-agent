@@ -13,6 +13,7 @@ Four phases that mirror the system's dependency chain. Phase 1 builds the data p
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [ ] **Phase 1: Prospect Pipeline** - Discover, enrich, score, and store prospects in Airtable
+- [ ] **Phase 1.1: Deep Enrichment** - Episode content, company about pages, podcast pattern analysis (INSERTED)
 - [ ] **Phase 2: Call Context Generation** - Generate personalized call context from cheat sheets via LLM
 - [ ] **Phase 3: Voice Agent and Outcome Handling** - Build Vapi agent, wire tooling, classify and store outcomes
 - [ ] **Phase 4: Demos and Write-up** - Record demo calls and write the submission document
@@ -35,9 +36,27 @@ Plans:
 - [ ] 01-02-PLAN.md -- Scoring, filtering, skip list, and cheat sheet assembly
 - [ ] 01-03-PLAN.md -- Airtable upload, pipeline orchestrator, and end-to-end verification
 
+### Phase 1.1: Deep Enrichment (INSERTED)
+**Goal**: Every call-ready prospect has deep context (recent episode content, company description, podcast themes) that enables genuinely personalized cold call openers
+**Depends on**: Phase 1 (specifically: runs after score, only on call-ready prospects)
+**Requirements**: DEEP-01, DEEP-02, DEEP-03, DEEP-04, DEEP-05, DEEP-06, DEEP-07
+**Success Criteria** (what must be TRUE):
+  1. Each call-ready prospect record includes last 3 episode descriptions with guest names and topics extracted from their existing RSS feed
+  2. Each call-ready prospect record includes a 2-3 sentence company summary scraped from their domain's homepage or about page
+  3. Each call-ready prospect record includes a podcast theme summary derived from analyzing the last 10 episode titles/descriptions
+  4. Deep enrichment data is saved to data/deep_enrich.json and the pipeline runner includes a `deep_enrich` step between `score` and `upload`
+  5. Zero additional API costs (all data from RSS feeds and public web pages)
+  6. Only call-ready prospects are deep-enriched (disqualified/below-threshold prospects are skipped to save time)
+**Pipeline position**: discover -> qualify -> enrich -> score -> **deep_enrich** -> upload
+**Plans**: 2 plans
+
+Plans:
+- [ ] 01.1-01-PLAN.md -- Deep enrichment module (RSS re-parsing, company scraping, Ollama theme/company summaries)
+- [ ] 01.1-02-PLAN.md -- Pipeline wiring (ProspectDict fields, upload mapping, run_pipeline integration)
+
 ### Phase 2: Call Context Generation
-**Goal**: Every scored prospect in Airtable has a pre-generated, LLM-produced call context block ready for the call runner
-**Depends on**: Phase 1
+**Goal**: Every call-ready prospect has an AI-generated personalized call briefing (custom opener, pain hypotheses, objections, Riverside hooks) synthesized from all enrichment data
+**Depends on**: Phase 1.1 (consumes deep enrichment data + scored prospect data)
 **Requirements**: CCTX-01, CCTX-02, CCTX-03, CCTX-04, CCTX-05
 **Success Criteria** (what must be TRUE):
   1. Each prospect's Airtable row contains a call_context field with a custom opener referencing a specific recent episode, two or more pain hypotheses, at least one predicted objection, and a Riverside relevance hook
@@ -71,11 +90,12 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4
+Phases execute in numeric order: 1 -> 1.1 -> 2 -> 3 -> 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Prospect Pipeline | 0/3 | Planning complete | - |
+| 1.1. Deep Enrichment (INSERTED) | 0/2 | Planning complete | - |
 | 2. Call Context Generation | 0/TBD | Not started | - |
 | 3. Voice Agent and Outcome Handling | 0/TBD | Not started | - |
 | 4. Demos and Write-up | 0/TBD | Not started | - |

@@ -25,6 +25,16 @@ Requirements for the assignment submission. Each maps to roadmap phases.
 - [ ] **SCOR-03**: System cross-checks prospects against a skip list of known Riverside customers before calling
 - [ ] **SCOR-04**: Scoring layer acts as the automated quality gate (no human review step between scoring and calling)
 
+### Deep Enrichment (Phase 1.1 -- INSERTED)
+
+- [ ] **DEEP-01**: System re-parses RSS feeds for call-ready prospects to extract last 3 episodes with title, description, and guest name
+- [ ] **DEEP-02**: System extracts guest names from episode titles using regex heuristics (patterns: "with [Name]", "ft. [Name]", "featuring [Name]", "| [Name]")
+- [ ] **DEEP-03**: System scrapes company homepage (meta description, og:description, or h1) to produce raw company text, with graceful failure (blank on error, no retries)
+- [ ] **DEEP-04**: System generates podcast theme summary and refined company summary via local Ollama LLM (single combined call per prospect, zero API cost)
+- [ ] **DEEP-05**: System rebuilds a richer cheat sheet for call-ready prospects incorporating episode details, company summary, and podcast themes
+- [ ] **DEEP-06**: ProspectDict includes episode_details, company_summary, and podcast_themes fields; Airtable upload maps all three to columns
+- [ ] **DEEP-07**: Pipeline runner includes deep_enrich step between score and upload; upload reads deep_enrich.json instead of score.json
+
 ### Call Context
 
 - [ ] **CCTX-01**: System generates a custom opening line per prospect via LLM, referencing specific podcast data (recent episode, guest, topic)
@@ -118,6 +128,13 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SCOR-04 | Phase 1 | Pending |
 | DATA-01 | Phase 1 | Pending |
 | DATA-02 | Phase 1 | Pending |
+| DEEP-01 | Phase 1.1 | Pending |
+| DEEP-02 | Phase 1.1 | Pending |
+| DEEP-03 | Phase 1.1 | Pending |
+| DEEP-04 | Phase 1.1 | Pending |
+| DEEP-05 | Phase 1.1 | Pending |
+| DEEP-06 | Phase 1.1 | Pending |
+| DEEP-07 | Phase 1.1 | Pending |
 | CCTX-01 | Phase 2 | Pending |
 | CCTX-02 | Phase 2 | Pending |
 | CCTX-03 | Phase 2 | Pending |
@@ -143,10 +160,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DEMO-08 | Phase 4 | Pending |
 
 **Coverage:**
-- v1 requirements: 34 total (note: initial estimate of 27 was pre-list; actual count is 34)
-- Mapped to phases: 34
+- v1 requirements: 41 total (34 original + 7 DEEP-xx added for Phase 1.1)
+- Mapped to phases: 41
 - Unmapped: 0
 
 ---
 *Requirements defined: 2026-04-20*
-*Last updated: 2026-04-20 after roadmap creation*
+*Last updated: 2026-04-22 after Phase 1.1 planning*
