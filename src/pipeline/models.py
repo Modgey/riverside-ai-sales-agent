@@ -20,7 +20,6 @@ class ProspectDict(TypedDict, total=False):
     score: int
     status: str
     disqualify_reason: Optional[str]
-    cheat_sheet: Optional[str]
     first_name: Optional[str]
     last_name: Optional[str]
     language: Optional[str]

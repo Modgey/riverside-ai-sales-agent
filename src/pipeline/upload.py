@@ -21,7 +21,6 @@ def prospect_to_airtable_fields(prospect: ProspectDict) -> dict:
         "recent_episode_topic": prospect.get("recent_episode_topic", ""),
         "score": prospect.get("score", 0),
         "status": prospect.get("status", ""),
-        "cheat_sheet": prospect.get("cheat_sheet", ""),
         "domain": prospect.get("domain", ""),
         "episode_count": prospect.get("episode_count"),
         "enrichment_status": prospect.get("enrichment_status", ""),
@@ -54,7 +53,6 @@ if __name__ == "__main__":
         "score": 0,
         "status": "disqualified",
         "enrichment_status": "test",
-        "cheat_sheet": "{}",
     }
     upload_to_airtable([test_record])
     print("  Test upload complete. Delete '_pipeline_test_record' from Airtable manually.")
