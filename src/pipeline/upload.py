@@ -25,6 +25,7 @@ def prospect_to_airtable_fields(prospect: ProspectDict) -> dict:
         "episode_count": prospect.get("episode_count"),
         "enrichment_status": prospect.get("enrichment_status", ""),
         "disqualify_reason": prospect.get("disqualify_reason", ""),
+        "has_video": prospect.get("has_video", False),
         "episode_details": json.dumps(prospect.get("episode_details", []), ensure_ascii=False)[:10000],
         "company_summary": prospect.get("company_summary", "") or "",
         "podcast_themes": prospect.get("podcast_themes", "") or "",
