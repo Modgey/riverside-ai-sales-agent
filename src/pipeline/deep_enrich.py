@@ -145,33 +145,6 @@ def call_ollama_deep(
         return None
 
 
-def assemble_deep_cheat_sheet(prospect: ProspectDict) -> str:
-    """Build a richer cheat sheet including deep enrichment data."""
-    data = {
-        "prospect": {
-            "host_name": prospect.get("host_name", ""),
-            "company_name": prospect.get("company_name", ""),
-            "company_size": prospect.get("company_size"),
-            "industry": prospect.get("industry", ""),
-            "work_email": prospect.get("work_email", ""),
-            "title": prospect.get("title", ""),
-        },
-        "podcast": {
-            "podcast_name": prospect.get("podcast_name", ""),
-            "cadence_days": prospect.get("cadence_days"),
-            "episode_count": prospect.get("episode_count", 0),
-            "podcast_themes": prospect.get("podcast_themes", ""),
-        },
-        "recent_episodes": prospect.get("episode_details", []),
-        "company_summary": prospect.get("company_summary", ""),
-        "scoring": {
-            "score": prospect.get("score", 0),
-            "status": prospect.get("status", ""),
-        },
-    }
-    return json.dumps(data, indent=2)
-
-
 def deep_enrich_prospects(prospects: list[ProspectDict]) -> list[ProspectDict]:
     """Deep enrich call-ready prospects with episode details, company text, and LLM summaries."""
     call_ready = [p for p in prospects if p.get("status") == "call-ready"]
@@ -208,9 +181,6 @@ def deep_enrich_prospects(prospects: list[ProspectDict]) -> list[ProspectDict]:
             llm_fail += 1
             prospect["podcast_themes"] = None
             prospect["company_summary"] = raw_company[:300] if raw_company else None
-
-        # 4. Rebuild cheat sheet with deep data
-        prospect["cheat_sheet"] = assemble_deep_cheat_sheet(prospect)
 
     print(f"  Deep enrich complete: {len(call_ready)} processed, {scraped_fail} scrape failures, {llm_fail} LLM failures")
 
