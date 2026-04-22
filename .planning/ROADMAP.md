@@ -102,6 +102,6 @@ Phases execute in numeric order: 1 -> 1.1 -> 2 -> 3 -> 4
 |-------|----------------|--------|-----------|
 | 1. Prospect Pipeline | 3/3 | Done | 2026-04-22 |
 | 1.1. Deep Enrichment (INSERTED) | 2/2 | Done | 2026-04-22 |
-| 2. Call Context Generation | 0/2 | Not started | - |
+| 2. Call Context Generation | 0/2 | Planned | - |
 | 3. Voice Agent and Outcome Handling | 0/TBD | Not started | - |
 | 4. Demos and Write-up | 0/TBD | Not started | - |
