@@ -10,9 +10,11 @@ from pipeline.enrich import enrich_prospects
 from pipeline.score import score_and_filter
 from pipeline.upload import upload_to_airtable
 from pipeline.deep_enrich import deep_enrich_prospects
+from pipeline.phone_enrich import phone_enrich_prospects
+from pipeline.call_context import generate_call_context
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
-STEPS = ["discover", "qualify", "enrich", "score", "deep_enrich", "upload"]
+STEPS = ["discover", "qualify", "enrich", "score", "deep_enrich", "phone_enrich", "upload"]
 
 
 def ensure_data_dir():
@@ -71,7 +73,7 @@ def run_enrich():
     raw = load("qualified")
     qualified_only = [p for p in raw if p.get("qualification_status") == "qualified"]
     disqualified = [p for p in raw if p.get("qualification_status") != "qualified"]
-    print(f"  Enriching {len(qualified_only)} qualified prospects via Prospeo API...")
+    print(f"  Enriching {len(qualified_only)} qualified prospects...")
     print(f"  ({len(disqualified)} disqualified prospects skipped, saving API credits)\n")
     enriched = enrich_prospects(qualified_only)
     all_prospects = enriched + disqualified
@@ -89,37 +91,78 @@ def run_score():
     enriched = load("enrich")
     scored = score_and_filter(enriched, skip_list_path=os.path.join(os.path.dirname(__file__), "skip_list.json"))
     save("score", scored)
-    call_ready = sum(1 for p in scored if p["status"] == "call-ready")
-    below = sum(1 for p in scored if p["status"] == "below-threshold")
-    disqualified = sum(1 for p in scored if p["status"] == "disqualified")
-    skipped = sum(1 for p in scored if p["status"] == "skipped")
-    print(f"\n  Done: {call_ready} call-ready, {below} below threshold, {disqualified} disqualified, {skipped} skipped")
+    call_ready = sum(1 for p in scored if p["status"] == "Qualified")
+    nurture = sum(1 for p in scored if p["status"] == "Nurture")
+    disqualified = sum(1 for p in scored if p["status"] == "Disqualified")
+    skipped = sum(1 for p in scored if p["status"] == "Skipped")
+    print(f"\n  Done: {call_ready} Qualified, {nurture} Nurture, {disqualified} Disqualified, {skipped} Skipped")
     return scored
 
 
 def run_deep_enrich():
     print("\n[Stage 5/6] Deep Enrichment")
     print("-" * 40)
-    print("  Pulling episode details, company pages, and LLM theme summaries for call-ready prospects...\n")
+    print("  Pulling episode details, company pages, and LLM theme summaries for Qualified prospects...\n")
     scored = load("score")
     enriched = deep_enrich_prospects(scored)
     save("deep_enrich", enriched)
-    call_ready = [p for p in enriched if p.get("status") == "call-ready"]
-    with_themes = sum(1 for p in call_ready if p.get("podcast_themes"))
-    with_company = sum(1 for p in call_ready if p.get("company_summary"))
-    print(f"\n  Done: {len(call_ready)} call-ready prospects deep enriched")
-    print(f"    Podcast themes: {with_themes}/{len(call_ready)}")
-    print(f"    Company summaries: {with_company}/{len(call_ready)}")
+    call_ready = [p for p in enriched if p.get("status") == "Qualified"]
+    with_profile = sum(1 for p in call_ready if p.get("podcast_profile"))
+    with_company = sum(1 for p in call_ready if p.get("company_profile"))
+    with_signals = sum(1 for p in call_ready if p.get("production_signals"))
+    print(f"\n  Done: {len(call_ready)} Qualified prospects deep enriched")
+    print(f"    Podcast profiles: {with_profile}/{len(call_ready)}")
+    print(f"    Company profiles: {with_company}/{len(call_ready)}")
+    print(f"    Production signals: {with_signals}/{len(call_ready)}")
     return enriched
 
 
+def run_phone_enrich():
+    print("\n[Stage 6/7] Phone Enrichment")
+    print("-" * 40)
+    print("  Looking up mobile numbers for top qualified prospects...\n")
+    prospects = load("deep_enrich")
+    enriched = phone_enrich_prospects(prospects)
+    save("phone_enrich", enriched)
+    with_phone = sum(1 for p in enriched if p.get("phone_number"))
+    print(f"\n  Done: {with_phone} prospects have phone numbers")
+    return enriched
+
+
+def _load_latest_enriched() -> list[dict]:
+    for step in ("phone_enrich", "deep_enrich", "score"):
+        path = os.path.join(DATA_DIR, f"{step}.json")
+        if os.path.exists(path):
+            return load(step)
+    print("  Error: no scored/enriched data found. Run at least the score step first.")
+    sys.exit(1)
+
+
 def run_upload():
-    print("\n[Stage 6/6] Upload to Airtable")
+    print("\n[Stage 7/7] Upload to Airtable")
     print("-" * 40)
     print("  Pushing scored prospects to Airtable for review...\n")
-    prospects = load("deep_enrich")
+    prospects = _load_latest_enriched()
     upload_to_airtable(prospects)
     print("\n  Done: Airtable populated")
+
+
+def run_generate_context():
+    print("\n[Call Context Generation]")
+    print("-" * 40)
+    print("  Generating personalized call briefings for Qualified prospects...\n")
+    prospects = _load_latest_enriched()
+    enriched = generate_call_context(prospects)
+    save("call_context", enriched)
+
+    # Also upload to Airtable so reviewer can see call context
+    upload_to_airtable(enriched)
+
+    call_ready = [p for p in enriched if p.get("status") == "Qualified"]
+    with_context = sum(1 for p in call_ready if p.get("call_context"))
+    print(f"\n  Done: {with_context}/{len(call_ready)} Qualified prospects have call context")
+    print(f"  Saved: data/call_context.json + Airtable updated")
+    return enriched
 
 
 def run_all():
@@ -131,6 +174,7 @@ def run_all():
     run_enrich()
     run_score()
     run_deep_enrich()
+    run_phone_enrich()
     run_upload()
     print("\n" + "=" * 60)
     print("PIPELINE COMPLETE")
@@ -143,10 +187,14 @@ def print_usage():
     print("Steps (run in order):")
     print("  discover  - Search Podcast Index + parse RSS feeds")
     print("  qualify   - AI classification via Ollama (person/org, language, domain)")
-    print("  enrich    - Enrich qualified prospects via Prospeo API")
+    print("  enrich    - Enrich qualified prospects (email, company data)")
     print("  score     - Apply hard filters + weighted scoring")
-    print("  deep_enrich - Pull episode details, company pages, LLM summaries for call-ready prospects")
-    print("  upload    - Push scored prospects to Airtable")
+    print("  deep_enrich    - Pull episode details, company pages, LLM summaries for Qualified prospects")
+    print("  phone_enrich   - Look up mobile numbers for top qualified prospects")
+    print("  upload         - Push scored prospects to Airtable")
+    print()
+    print("Standalone commands (not part of main pipeline):")
+    print("  generate_context - Generate AI call briefings for Qualified prospects")
     print()
     print("  all       - Run all steps end-to-end (default)")
     print("  status    - Show what data files exist and record counts")
@@ -173,16 +221,17 @@ def print_status():
                 rs = sum(1 for p in data if p.get("qualification_status") == "existing_riverside_customer")
                 print(f"  {step:10} : {len(data):4} records ({size_kb:.1f} KB) | {q} qualified, {dq} disqualified, {rs} riverside")
             elif step == "score":
-                call_ready = sum(1 for p in data if p.get("status") == "call-ready")
-                below = sum(1 for p in data if p.get("status") == "below-threshold")
-                disqualified = sum(1 for p in data if p.get("status") == "disqualified")
-                skipped = sum(1 for p in data if p.get("status") == "skipped")
-                print(f"  {step:10} : {len(data):4} records ({size_kb:.1f} KB) | {call_ready} ready, {below} below, {disqualified} disq, {skipped} skip")
+                qualified = sum(1 for p in data if p.get("status") == "Qualified")
+                nurture = sum(1 for p in data if p.get("status") == "Nurture")
+                disqualified = sum(1 for p in data if p.get("status") == "Disqualified")
+                skipped = sum(1 for p in data if p.get("status") == "Skipped")
+                print(f"  {step:10} : {len(data):4} records ({size_kb:.1f} KB) | {qualified} qualified, {nurture} nurture, {disqualified} disq, {skipped} skip")
             elif step == "deep_enrich":
-                call_ready = [p for p in data if p.get("status") == "call-ready"]
-                with_themes = sum(1 for p in call_ready if p.get("podcast_themes"))
-                with_company = sum(1 for p in call_ready if p.get("company_summary"))
-                print(f"  {step:10} : {len(data):4} records ({size_kb:.1f} KB) | {len(call_ready)} call-ready, {with_themes} themes, {with_company} summaries")
+                qualified = [p for p in data if p.get("status") == "Qualified"]
+                with_profile = sum(1 for p in qualified if p.get("podcast_profile"))
+                with_company = sum(1 for p in qualified if p.get("company_profile"))
+                with_signals = sum(1 for p in qualified if p.get("production_signals"))
+                print(f"  {step:10} : {len(data):4} records ({size_kb:.1f} KB) | {len(qualified)} qualified, {with_profile} profiles, {with_company} companies, {with_signals} signals")
             elif step == "enrich":
                 enriched_ok = sum(1 for p in data if p.get("enrichment_status") == "enriched")
                 failed = sum(1 for p in data if p.get("enrichment_status") == "enrichment-failed")
@@ -191,6 +240,17 @@ def print_status():
                 print(f"  {step:10} : {len(data):4} records ({size_kb:.1f} KB)")
         else:
             print(f"  {step:10} : not run yet")
+    # Check standalone outputs
+    ctx_path = os.path.join(DATA_DIR, "call_context.json")
+    if os.path.exists(ctx_path):
+        with open(ctx_path, "r", encoding="utf-8") as f:
+            ctx_data = json.load(f)
+        ctx_kb = os.path.getsize(ctx_path) / 1024
+        with_ctx = sum(1 for p in ctx_data if p.get("call_context"))
+        qualified = sum(1 for p in ctx_data if p.get("status") == "Qualified")
+        print(f"  {'call_context':10} : {len(ctx_data):4} records ({ctx_kb:.1f} KB) | {with_ctx}/{qualified} qualified have context")
+    else:
+        print(f"  {'call_context':10} : not generated yet (run: generate_context)")
     print()
 
 
@@ -207,8 +267,12 @@ if __name__ == "__main__":
         run_score()
     elif step == "deep_enrich":
         run_deep_enrich()
+    elif step == "phone_enrich":
+        run_phone_enrich()
     elif step == "upload":
         run_upload()
+    elif step == "generate_context":
+        run_generate_context()
     elif step == "all":
         run_all()
     elif step == "status":
