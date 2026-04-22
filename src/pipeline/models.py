@@ -25,6 +25,9 @@ class ProspectDict(TypedDict, total=False):
     language: Optional[str]
     qualification_status: Optional[str]
     episode_details: Optional[list]      # list of episode dicts (title, description, guest_name, published)
-    company_summary: Optional[str]       # LLM-refined company summary from homepage
-    podcast_themes: Optional[str]        # LLM-generated podcast theme summary
+    podcast_profile: Optional[str]       # LLM-extracted podcast niche, format, guests, patterns
+    company_profile: Optional[str]       # LLM-extracted company product, market, content signals
+    production_signals: Optional[str]    # LLM-observed video, remote guests, tools, quality signals
     has_video: Optional[bool]             # True if video signals detected in RSS feed
+    phone_number: Optional[str]
+    call_context: Optional[str]            # JSON string of AI-generated call briefing
