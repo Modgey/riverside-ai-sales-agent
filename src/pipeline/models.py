@@ -27,3 +27,4 @@ class ProspectDict(TypedDict, total=False):
     episode_details: Optional[list]      # list of episode dicts (title, description, guest_name, published)
     company_summary: Optional[str]       # LLM-refined company summary from homepage
     podcast_themes: Optional[str]        # LLM-generated podcast theme summary
+    has_video: Optional[bool]             # True if video signals detected in RSS feed

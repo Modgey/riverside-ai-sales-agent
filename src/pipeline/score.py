@@ -39,6 +39,13 @@ def category_match_score(prospect: ProspectDict) -> float:
     return 0
 
 
+def video_bonus_score(prospect: ProspectDict) -> float:
+    """Video podcasters are higher-value Riverside prospects."""
+    if prospect.get("has_video"):
+        return 15
+    return 0
+
+
 def score_and_filter(
     prospects: list[ProspectDict],
     skip_list_path: str = "skip_list.json",
@@ -92,6 +99,7 @@ def score_and_filter(
             + cadence_fit_score(cadence)
             + data_completeness_score(prospect)
             + category_match_score(prospect)
+            + video_bonus_score(prospect)
         )
         prospect["score"] = round(total)
 
