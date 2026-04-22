@@ -12,8 +12,8 @@ Four phases that mirror the system's dependency chain. Phase 1 builds the data p
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Prospect Pipeline** - Discover, enrich, score, and store prospects in Airtable
-- [ ] **Phase 1.1: Deep Enrichment** - Episode content, company about pages, podcast pattern analysis (INSERTED)
+- [x] **Phase 1: Prospect Pipeline** - Discover, enrich, score, and store prospects in Airtable
+- [x] **Phase 1.1: Deep Enrichment** - Episode content, company about pages, podcast pattern analysis (INSERTED)
 - [ ] **Phase 2: Call Context Generation** - Generate personalized call context from cheat sheets via LLM
 - [ ] **Phase 3: Voice Agent and Outcome Handling** - Build Vapi agent, wire tooling, classify and store outcomes
 - [ ] **Phase 4: Demos and Write-up** - Record demo calls and write the submission document
@@ -62,7 +62,13 @@ Plans:
   1. Each prospect's Airtable row contains a call_context field with a custom opener referencing a specific recent episode, two or more pain hypotheses, at least one predicted objection, and a Riverside relevance hook
   2. The call context is a separate field from the cheat sheet; the raw cheat sheet data is never the field that the call runner reads
   3. Running the context generation step against a 10-prospect batch completes without error and updates all rows
-**Plans**: TBD
+**Implementation Notes**:
+  - MUST include prospect `title` (role) in call context prompt. Agent adjusts pitch based on role: strategic pitch for VP/Head of, workflow pitch for producer/editor. Data already available from Hunter enrichment.
+**Plans**: 2 plans
+
+Plans:
+- [ ] 02-01-PLAN.md -- Call context module, config, ProspectDict + Airtable wiring
+- [ ] 02-02-PLAN.md -- CLI command wiring and end-to-end verification
 
 ### Phase 3: Voice Agent and Outcome Handling
 **Goal**: The agent places calls, handles objections, triggers mid-call actions, and writes classified outcomes back to Airtable
@@ -94,8 +100,8 @@ Phases execute in numeric order: 1 -> 1.1 -> 2 -> 3 -> 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Prospect Pipeline | 0/3 | Planning complete | - |
-| 1.1. Deep Enrichment (INSERTED) | 0/2 | Planning complete | - |
-| 2. Call Context Generation | 0/TBD | Not started | - |
+| 1. Prospect Pipeline | 3/3 | Done | 2026-04-22 |
+| 1.1. Deep Enrichment (INSERTED) | 2/2 | Done | 2026-04-22 |
+| 2. Call Context Generation | 0/2 | Not started | - |
 | 3. Voice Agent and Outcome Handling | 0/TBD | Not started | - |
 | 4. Demos and Write-up | 0/TBD | Not started | - |
