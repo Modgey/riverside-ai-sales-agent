@@ -12,9 +12,10 @@ from pipeline.upload import upload_to_airtable
 from pipeline.deep_enrich import deep_enrich_prospects
 from pipeline.phone_enrich import phone_enrich_prospects
 from pipeline.call_context import generate_call_context
+from call_runner import load_call_ready_prospects, list_prospects
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
-STEPS = ["discover", "qualify", "enrich", "score", "deep_enrich", "phone_enrich", "upload"]
+STEPS = ["discover", "qualify", "enrich", "score", "deep_enrich", "phone_enrich", "call_context", "upload", "call"]
 
 
 def ensure_data_dir():
@@ -130,7 +131,7 @@ def run_phone_enrich():
 
 
 def _load_latest_enriched() -> list[dict]:
-    for step in ("phone_enrich", "deep_enrich", "score"):
+    for step in ("call_context", "phone_enrich", "deep_enrich", "score"):
         path = os.path.join(DATA_DIR, f"{step}.json")
         if os.path.exists(path):
             return load(step)
@@ -148,21 +149,31 @@ def run_upload():
 
 
 def run_generate_context():
-    print("\n[Call Context Generation]")
+    print("\n[Stage 7/8] Call Context Generation")
     print("-" * 40)
     print("  Generating personalized call briefings for Qualified prospects...\n")
     prospects = _load_latest_enriched()
     enriched = generate_call_context(prospects)
     save("call_context", enriched)
-
-    # Also upload to Airtable so reviewer can see call context
-    upload_to_airtable(enriched)
-
     call_ready = [p for p in enriched if p.get("status") == "Qualified"]
     with_context = sum(1 for p in call_ready if p.get("call_context"))
     print(f"\n  Done: {with_context}/{len(call_ready)} Qualified prospects have call context")
-    print(f"  Saved: data/call_context.json + Airtable updated")
     return enriched
+
+
+def run_call_step():
+    print("\n[Call] Place outbound calls")
+    print("-" * 40)
+    print("  This step places real outbound calls via Vapi.")
+    print("  Use the call_runner directly for more control:")
+    print()
+    print("    py src/call_runner.py --list              # See available prospects")
+    print("    py src/call_runner.py --dry-run            # Test config without calling")
+    print("    py src/call_runner.py --prospect 'Name' --number '+1...'  # Call one")
+    print("    py src/call_runner.py --all --number '+1...'              # Call all")
+    print()
+    print("  The 'call' step is not included in 'all' (pipeline all) because calls")
+    print("  are interactive, take minutes, and cost money. Run explicitly.")
 
 
 def run_all():
@@ -175,6 +186,7 @@ def run_all():
     run_score()
     run_deep_enrich()
     run_phone_enrich()
+    run_generate_context()
     run_upload()
     print("\n" + "=" * 60)
     print("PIPELINE COMPLETE")
@@ -191,10 +203,9 @@ def print_usage():
     print("  score     - Apply hard filters + weighted scoring")
     print("  deep_enrich    - Pull episode details, company pages, LLM summaries for Qualified prospects")
     print("  phone_enrich   - Look up mobile numbers for top qualified prospects")
-    print("  upload         - Push scored prospects to Airtable")
-    print()
-    print("Standalone commands (not part of main pipeline):")
-    print("  generate_context - Generate AI call briefings for Qualified prospects")
+    print("  call_context   - Generate personalized call briefings for Qualified prospects")
+    print("  upload         - Push final list to Airtable")
+    print("  call           - Place outbound calls (run separately, not part of 'all')")
     print()
     print("  all       - Run all steps end-to-end (default)")
     print("  status    - Show what data files exist and record counts")
@@ -236,21 +247,27 @@ def print_status():
                 enriched_ok = sum(1 for p in data if p.get("enrichment_status") == "enriched")
                 failed = sum(1 for p in data if p.get("enrichment_status") == "enrichment-failed")
                 print(f"  {step:10} : {len(data):4} records ({size_kb:.1f} KB) | {enriched_ok} enriched, {failed} failed")
+            elif step == "call_context":
+                with_ctx = sum(1 for p in data if p.get("call_context"))
+                qualified = sum(1 for p in data if p.get("status") == "Qualified")
+                print(f"  {step:12} : {len(data):4} records ({size_kb:.1f} KB) | {with_ctx}/{qualified} qualified have context")
             else:
                 print(f"  {step:10} : {len(data):4} records ({size_kb:.1f} KB)")
+        elif step == "call":
+            results_path = os.path.join(DATA_DIR, "call_results.json")
+            if os.path.exists(results_path):
+                with open(results_path, "r", encoding="utf-8") as f:
+                    results = json.load(f)
+                outcomes = {}
+                for p in results:
+                    o = p.get("call_outcome", "unknown")
+                    outcomes[o] = outcomes.get(o, 0) + 1
+                outcome_str = ", ".join(f"{k}: {v}" for k, v in outcomes.items())
+                print(f"  {'call':10} : {len(results):4} results | {outcome_str}")
+            else:
+                print(f"  {'call':10} : not run yet (use call_runner.py)")
         else:
             print(f"  {step:10} : not run yet")
-    # Check standalone outputs
-    ctx_path = os.path.join(DATA_DIR, "call_context.json")
-    if os.path.exists(ctx_path):
-        with open(ctx_path, "r", encoding="utf-8") as f:
-            ctx_data = json.load(f)
-        ctx_kb = os.path.getsize(ctx_path) / 1024
-        with_ctx = sum(1 for p in ctx_data if p.get("call_context"))
-        qualified = sum(1 for p in ctx_data if p.get("status") == "Qualified")
-        print(f"  {'call_context':10} : {len(ctx_data):4} records ({ctx_kb:.1f} KB) | {with_ctx}/{qualified} qualified have context")
-    else:
-        print(f"  {'call_context':10} : not generated yet (run: generate_context)")
     print()
 
 
@@ -271,8 +288,10 @@ if __name__ == "__main__":
         run_phone_enrich()
     elif step == "upload":
         run_upload()
-    elif step == "generate_context":
+    elif step in ("call_context", "generate_context"):
         run_generate_context()
+    elif step == "call":
+        run_call_step()
     elif step == "all":
         run_all()
     elif step == "status":
