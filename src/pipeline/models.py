@@ -31,3 +31,8 @@ class ProspectDict(TypedDict, total=False):
     has_video: Optional[bool]             # True if video signals detected in RSS feed
     phone_number: Optional[str]
     call_context: Optional[str]            # JSON string of AI-generated call briefing
+    call_outcome: Optional[str]            # booked | interested | not-a-fit | voicemail | no-answer | do-not-call
+    call_notes: Optional[str]             # 1-2 sentence summary from Vapi analysisPlan
+    call_timestamp: Optional[str]         # ISO 8601 timestamp of call completion
+    follow_up_action: Optional[str]       # What follow-up would be triggered
+    call_id: Optional[str]                # Vapi call ID for reference
