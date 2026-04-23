@@ -10,7 +10,7 @@ from flask import Flask, request, jsonify
 app = Flask(__name__)
 
 TOOL_RESPONSES = {
-    "book_meeting": "Great, I've sent a calendar invite to schedule a demo. They should see it in their inbox shortly.",
+    "book_meeting": "Great, I'll have someone from our team reach out to schedule a time to chat. They should hear from us shortly.",
     "send_signup_link": "Done, I've sent them a link to sign up for a free Riverside trial. They can get started right away.",
 }
 

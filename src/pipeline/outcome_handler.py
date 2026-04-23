@@ -12,8 +12,8 @@ load_dotenv(os.path.join(os.path.dirname(os.path.dirname(__file__)), ".env"))
 VALID_OUTCOMES = {"booked", "interested", "not-a-fit", "voicemail", "no-answer", "do-not-call"}
 
 FOLLOW_UP_ACTIONS = {
-    "booked": "Send Calendly confirmation email to {email}",
-    "interested": "Send Riverside free trial signup link to {email}",
+    "booked": "Route to AE for personalized follow-up with {email}",
+    "interested": "Add {email} to nurture sequence with personalized follow-up",
     "not-a-fit": "No follow-up needed",
     "voicemail": "Schedule retry call in 48 hours",
     "no-answer": "Schedule retry call in 24 hours",

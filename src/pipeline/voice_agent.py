@@ -30,8 +30,9 @@ def build_tool_definitions() -> list[dict]:
             "function": {
                 "name": "book_meeting",
                 "description": (
-                    "Book a demo meeting with the prospect. Call this when "
-                    "the prospect agrees to a meeting or demo."
+                    "Schedule a follow-up conversation with a Riverside team "
+                    "member. Call this when the prospect wants to learn more "
+                    "or continue the conversation."
                 ),
                 "parameters": {
                     "type": "object",
@@ -180,7 +181,7 @@ def place_call(prospect: dict, target_number: str) -> object:
     hooks = ctx.get("riverside_hooks", [])
 
     variable_values = {
-        "opener": ctx.get("opening_line", "Hey, this is Alex from Riverside."),
+        "opener": ctx.get("opening_line", "Hey, this is a quick call from the Riverside team."),
         "prospect_context": ctx.get("narrative_briefing", ""),
         "angle_1": hooks[0] if hooks else "",
         "angle_2": hooks[1] if len(hooks) > 1 else "",
