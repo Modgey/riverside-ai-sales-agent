@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Prospect Pipeline** - Discover, enrich, score, and store prospects in Airtable
 - [x] **Phase 1.1: Deep Enrichment** - Episode content, company about pages, podcast pattern analysis (INSERTED)
-- [ ] **Phase 2: Call Context Generation** - Generate personalized call context from cheat sheets via LLM
+- [x] **Phase 2: Call Context Generation** - Generate personalized call context from cheat sheets via LLM
 - [ ] **Phase 3: Voice Agent and Outcome Handling** - Build Vapi agent, wire tooling, classify and store outcomes
 - [ ] **Phase 4: Demos and Write-up** - Record demo calls and write the submission document
 
@@ -80,8 +80,12 @@ Plans:
   3. When a test caller expresses interest, the agent fires the book_meeting tool call and the Calendly link arrives within the call or immediately after
   4. After the call ends, the Airtable row for that prospect is updated with an outcome classification (booked, interested, not-a-fit, voicemail, no-answer, or do-not-call), call notes, and a timestamp
   5. The harness system prompt is identical across all test calls; only the variableValues block changes per call
-**Plans**: TBD
-**UI hint**: yes
+**Plans**: 3 plans
+
+Plans:
+- [ ] 03-01-PLAN.md -- Harness prompt, Vapi voice agent config, ProspectDict extension
+- [ ] 03-02-PLAN.md -- Outcome handler, Airtable field mapping, env var setup
+- [ ] 03-03-PLAN.md -- Tool server, call runner CLI, pipeline wiring, live call verification
 
 ### Phase 4: Demos and Write-up
 **Goal**: The submission is complete with recorded demo calls covering distinct scenarios and a write-up that explains the system, defends decisions, and demonstrates strategic thinking
@@ -102,6 +106,6 @@ Phases execute in numeric order: 1 -> 1.1 -> 2 -> 3 -> 4
 |-------|----------------|--------|-----------|
 | 1. Prospect Pipeline | 3/3 | Done | 2026-04-22 |
 | 1.1. Deep Enrichment (INSERTED) | 2/2 | Done | 2026-04-22 |
-| 2. Call Context Generation | 0/2 | Planned | - |
-| 3. Voice Agent and Outcome Handling | 0/TBD | Not started | - |
+| 2. Call Context Generation | 2/2 | Done | 2026-04-23 |
+| 3. Voice Agent and Outcome Handling | 0/3 | Not started | - |
 | 4. Demos and Write-up | 0/TBD | Not started | - |
