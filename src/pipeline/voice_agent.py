@@ -140,7 +140,7 @@ def build_assistant_config() -> dict:
             "provider": "11labs",
             "voiceId": os.getenv("VAPI_VOICE_ID", "JBFqnCBsd6RMkjVDRZzb"),
         },
-        "firstMessage": "{{opener}}",
+        "firstMessage": "Hey, is this {{first_name}}?",
         "transcriber": {
             "provider": "deepgram",
             "model": "nova-2",
