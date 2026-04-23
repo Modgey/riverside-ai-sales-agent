@@ -42,12 +42,12 @@ The agent can take actions mid-call: schedule a follow-up with someone on the Ri
 
 Every call ends in one of six outcomes:
 
-- **Meeting booked** -- prospect wants a follow-up conversation with the team
-- **Interested** -- positive signal but didn't commit, goes into a nurture sequence
+- **Follow-up scheduled** -- prospect wants a follow-up conversation with the team
+- **Warm lead** -- positive signal but didn't commit, goes into a nurture sequence
 - **Not a fit** -- prospect declined or wrong target, logged and moved on
 - **Voicemail** -- no one picked up, schedule retry
 - **No answer** -- didn't connect, schedule retry
-- **Do not call** -- prospect asked to be removed, added to suppression list
+- **Do not contact** -- prospect asked to be removed, added to suppression list
 
 Outcomes get classified and written back to the database. A post-call workflow handles next steps: routing booked meetings to an AE for personalized follow-up, adding interested prospects to a nurture sequence, scheduling retries for voicemails and no-answers, and respecting suppression requests immediately.
 

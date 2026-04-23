@@ -81,12 +81,12 @@ def build_analysis_plan() -> dict:
         "structuredDataPrompt": (
             "Classify this sales call outcome into exactly one category. "
             "Analyze the full transcript and determine:\n"
-            "- 'booked': prospect agreed to a meeting or demo\n"
-            "- 'interested': prospect showed interest but didn't commit to a meeting\n"
+            "- 'follow-up-scheduled': prospect agreed to a follow-up conversation with the team\n"
+            "- 'warm-lead': prospect showed interest but didn't commit to a follow-up\n"
             "- 'not-a-fit': prospect is not a good fit or declined the offer\n"
             "- 'voicemail': call went to voicemail\n"
             "- 'no-answer': nobody answered the call\n"
-            "- 'do-not-call': prospect explicitly asked not to be called again\n\n"
+            "- 'do-not-contact': prospect explicitly asked not to be contacted again\n\n"
             "Also provide:\n"
             "- call_notes: a 1-2 sentence summary of the call outcome\n"
             "- follow_up_action: what follow-up should happen (e.g., "
@@ -98,12 +98,12 @@ def build_analysis_plan() -> dict:
                 "outcome": {
                     "type": "string",
                     "enum": [
-                        "booked",
-                        "interested",
+                        "follow-up-scheduled",
+                        "warm-lead",
                         "not-a-fit",
                         "voicemail",
                         "no-answer",
-                        "do-not-call",
+                        "do-not-contact",
                     ],
                     "description": "The classified outcome of the call",
                 },

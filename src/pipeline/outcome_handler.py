@@ -9,15 +9,15 @@ from pyairtable import Api
 
 load_dotenv(os.path.join(os.path.dirname(os.path.dirname(__file__)), ".env"))
 
-VALID_OUTCOMES = {"booked", "interested", "not-a-fit", "voicemail", "no-answer", "do-not-call"}
+VALID_OUTCOMES = {"follow-up-scheduled", "warm-lead", "not-a-fit", "voicemail", "no-answer", "do-not-contact"}
 
 FOLLOW_UP_ACTIONS = {
-    "booked": "Route to AE for personalized follow-up with {email}",
-    "interested": "Add {email} to nurture sequence with personalized follow-up",
+    "follow-up-scheduled": "Route to AE for personalized follow-up with {email}",
+    "warm-lead": "Add {email} to nurture sequence with personalized follow-up",
     "not-a-fit": "No follow-up needed",
     "voicemail": "Schedule retry call in 48 hours",
     "no-answer": "Schedule retry call in 24 hours",
-    "do-not-call": "Add to suppression list, no further contact",
+    "do-not-contact": "Add to suppression list, no further contact",
 }
 
 
