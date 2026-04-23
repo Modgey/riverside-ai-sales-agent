@@ -41,6 +41,11 @@ def prospect_to_airtable_fields(prospect: ProspectDict) -> dict:
         "company_profile": prospect.get("company_profile", "") or "",
         "production_signals": prospect.get("production_signals", "") or "",
         "call_context": prospect.get("call_context", "") or "",
+        "call_outcome": prospect.get("call_outcome", ""),
+        "call_notes": prospect.get("call_notes", ""),
+        "call_timestamp": prospect.get("call_timestamp", ""),
+        "follow_up_action": prospect.get("follow_up_action", ""),
+        "call_id": prospect.get("call_id", ""),
     }
     return {k: v for k, v in fields.items() if v is not None}
 
