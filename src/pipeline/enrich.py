@@ -8,7 +8,8 @@ from pipeline.models import ProspectDict
 
 load_dotenv(os.path.join(os.path.dirname(os.path.dirname(__file__)), ".env"))
 
-PROSPEO_URL = "https://api.prospeo.io/enrich-person"
+HUNTER_EMAIL_FINDER_URL = "https://api.hunter.io/v2/email-finder"
+HUNTER_COMPANY_URL = "https://api.hunter.io/v2/company-enrichment"
 
 HOSTING_PLATFORM_DOMAINS = {
     "anchor.fm",
@@ -96,20 +97,10 @@ def split_name(full_name: str) -> tuple[str, str]:
     return (parts[0], parts[-1])
 
 
-def enrich_via_prospeo(first_name: str, last_name: str, domain: str, api_key: str) -> dict | str:
+def _hunter_get(url: str, params: dict, api_key: str) -> dict | str:
+    params["api_key"] = api_key
     try:
-        resp = requests.post(
-            PROSPEO_URL,
-            headers={"X-KEY": api_key, "Content-Type": "application/json"},
-            json={
-                "data": {
-                    "first_name": first_name,
-                    "last_name": last_name,
-                    "company_website": domain,
-                },
-            },
-            timeout=15,
-        )
+        resp = requests.get(url, params=params, timeout=15)
     except requests.RequestException:
         return {}
 
@@ -118,30 +109,55 @@ def enrich_via_prospeo(first_name: str, last_name: str, domain: str, api_key: st
     if resp.status_code == 429:
         return "RATE_LIMITED"
     if resp.status_code != 200:
-        body = resp.json() if resp.status_code == 400 else {}
-        if isinstance(body, dict) and body.get("error_code") == "NO_MATCH":
-            return {}
         return {}
 
-    body = resp.json()
-    if body.get("error"):
+    return resp.json().get("data") or {}
+
+
+def enrich_via_hunter(first_name: str, last_name: str, domain: str, api_key: str) -> dict | str:
+    person = _hunter_get(
+        HUNTER_EMAIL_FINDER_URL,
+        {"first_name": first_name, "last_name": last_name, "domain": domain},
+        api_key,
+    )
+    if isinstance(person, str):
+        return person
+    if not person:
         return {}
 
-    person = body.get("person") or {}
-    company = body.get("company") or {}
-    email_obj = person.get("email") or {}
+    verification = person.get("verification") or {}
+
+    company = _hunter_get(HUNTER_COMPANY_URL, {"domain": domain}, api_key)
+    if isinstance(company, str):
+        company = {}
+
+    employees_range = company.get("employees_range", "") if company else ""
+    company_size = _parse_employees_range(employees_range)
 
     return {
-        "work_email": email_obj.get("email"),
-        "email_status": email_obj.get("status"),
-        "title": person.get("title"),
-        "company_name": company.get("name"),
-        "company_size": company.get("employee_count"),
-        "industry": company.get("industry"),
+        "work_email": person.get("email"),
+        "email_status": verification.get("status"),
+        "title": person.get("position"),
+        "company_name": person.get("company") or (company.get("name") if company else None),
+        "company_size": company_size,
+        "industry": company.get("industry") if company else None,
     }
 
 
-def prioritize_prospects(prospects: list[ProspectDict]) -> list[ProspectDict]:
+def _parse_employees_range(range_str: str) -> int | None:
+    if not range_str:
+        return None
+    range_str = range_str.strip().replace(",", "").replace("+", "")
+    parts = range_str.split("-")
+    try:
+        if len(parts) == 2:
+            return (int(parts[0]) + int(parts[1])) // 2
+        return int(parts[0])
+    except ValueError:
+        return None
+
+
+def prioritize_prospects(prospects: list[ProspectDict]) -> tuple[list[ProspectDict], list[ProspectDict]]:
     enrichable = []
     skipped = []
 
@@ -173,9 +189,9 @@ def prioritize_prospects(prospects: list[ProspectDict]) -> list[ProspectDict]:
 
 
 def enrich_prospects(prospects: list[ProspectDict]) -> list[ProspectDict]:
-    api_key = os.getenv("PROSPEO_API_KEY")
+    api_key = os.getenv("HUNTER_API_KEY")
     if not api_key:
-        print("  Warning: PROSPEO_API_KEY not set, marking all as enrichment-failed")
+        print("  Warning: HUNTER_API_KEY not set, marking all as enrichment-failed")
         for p in prospects:
             p["enrichment_status"] = "enrichment-failed"
         return prospects
@@ -203,10 +219,10 @@ def enrich_prospects(prospects: list[ProspectDict]) -> list[ProspectDict]:
         first_name, last_name = split_name(host_name)
         domain = prospect.get("domain", "")
 
-        result = enrich_via_prospeo(first_name, last_name, domain, api_key)
+        result = enrich_via_hunter(first_name, last_name, domain, api_key)
 
         if result == "AUTH_ERROR":
-            print(f"  Prospeo auth error at prospect {i+1}/{total}. Marking remaining as failed.")
+            print(f"  Enrichment auth error at prospect {i+1}/{total}. Marking remaining as failed.")
             credits_dead = True
             prospect["enrichment_status"] = "enrichment-failed"
             failed_count += 1
@@ -215,13 +231,13 @@ def enrich_prospects(prospects: list[ProspectDict]) -> list[ProspectDict]:
         if result == "RATE_LIMITED":
             print(f"  Rate limited at prospect {i+1}/{total}. Waiting 30s then retrying...")
             time.sleep(30)
-            result = enrich_via_prospeo(first_name, last_name, domain, api_key)
+            result = enrich_via_hunter(first_name, last_name, domain, api_key)
             if result == "RATE_LIMITED":
                 print(f"  Still rate limited. Waiting 60s then retrying once more...")
                 time.sleep(60)
-                result = enrich_via_prospeo(first_name, last_name, domain, api_key)
+                result = enrich_via_hunter(first_name, last_name, domain, api_key)
             if result in ("AUTH_ERROR", "RATE_LIMITED"):
-                print(f"  Prospeo unavailable after retries. Marking remaining as failed.")
+                print(f"  Enrichment unavailable after retries. Marking remaining as failed.")
                 credits_dead = True
                 prospect["enrichment_status"] = "enrichment-failed"
                 failed_count += 1
@@ -242,7 +258,7 @@ def enrich_prospects(prospects: list[ProspectDict]) -> list[ProspectDict]:
         if (i + 1) % 10 == 0:
             print(f"  Enriching... {i + 1}/{total} ({enriched_count} enriched so far)")
 
-        time.sleep(6)
+        time.sleep(1)
 
     all_prospects = enrichable + skipped
     skipped_count = len(skipped)

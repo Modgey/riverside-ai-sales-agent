@@ -1,0 +1,275 @@
+RIVERSIDE KNOWLEDGE BASE
+========================
+
+This document contains accurate, up-to-date information about Riverside (riverside.com).
+Use this to answer prospect questions about pricing, features, comparisons, and more.
+
+
+PRICING
+-------
+
+Riverside has five plans:
+
+Free Plan ($0/month):
+- 2 hours of multitrack recording (one-time, not monthly)
+- Unlimited single-track recording
+- 720p video, 44.1 kHz audio
+- Riverside watermark on exports
+- Magic Clips included
+- Unlimited video calls
+- No credit card required
+
+Pro Plan ($24/month annual, $29/month monthly):
+- 15 hours of multitrack recording per month
+- Unlimited single-track recording
+- Up to 4K video, 48 kHz uncompressed WAV audio
+- No watermark
+- AI transcription in 100+ languages
+- Magic Clips (AI-generated short-form clips)
+- Magic Audio (one-click noise removal and audio enhancement)
+- Text-based video editing
+- Filler word and silence removal
+- Eye contact correction
+- Teleprompter (host only)
+- AI show notes, summary, and episode title generation
+- Publish to YouTube and podcast directories
+- Podcast analytics
+- Live chat support
+- 14-day free trial
+
+Live Plan ($34/month annual, $39/month monthly):
+- Everything in Pro, plus:
+- Full HD (1080p) live streaming
+- Multistream to YouTube, Facebook, LinkedIn, Instagram, X, and Twitch simultaneously
+- Custom RTMP support
+- Omnichat (unified live chat across all platforms)
+- Live call-ins from audience
+- Custom overlays and lower thirds
+- Backstage speaker management
+- 14-day free trial
+
+Webinar Plan ($79/month annual, $99/month monthly):
+- Everything in Live, plus:
+- Host webinars with up to 100 registrants
+- Custom branded registration forms
+- Automated email reminders and follow-ups
+- Q&A, polls, reactions, live call-ins
+- Pre-record content and stream as live
+- Webinar analytics
+- HubSpot integration for lead tracking
+- Unlimited scheduled sessions, no time limits
+- 14-day free trial
+
+Business Plan (custom pricing):
+- Everything in Webinar, plus:
+- Up to 10,000 webinar registrants
+- Unlimited multitrack recording (no 15hr/month cap)
+- Unlimited storage
+- Custom branding
+- Producer mode (control guest audio/video without being recorded)
+- Teleprompter for host and guests
+- Custom frame rates (24, 25, 29.97 FPS)
+- Presentation recorder
+- Collaborative editing and production workspaces
+- Salesforce integration
+- API access
+- SSO (Okta, Azure AD)
+- SOC 2 Type II and ISO 27001 certified
+- 24/7 priority support
+- Dedicated Customer Success Manager
+- Customized onboarding
+- 14-day free trial
+
+Annual billing saves 17-20%: Pro drops from $29 to $24, Live from $39 to $34, Webinar from $99 to $79.
+
+
+RECORDING FEATURES
+------------------
+
+Local Recording:
+Riverside records locally on each participant's device, not from the cloud. Video and audio are captured directly on the device and uploaded in the background. This means recording quality is completely independent of internet connection. Even if someone's WiFi drops, the local file is still perfect.
+
+Video Quality:
+Up to 4K (2160p) video on paid plans. 720p on the free plan. Constant frame rate recording.
+
+Audio Quality:
+48 kHz sample rate, 16-bit depth, uncompressed WAV files on paid plans. 44.1 kHz on the free plan.
+
+Separate Tracks:
+Every participant gets their own separate audio and video track. Screen share is captured as its own HD track. This makes editing easier because you can adjust one person without affecting the others.
+
+Participants:
+Up to 8 per recording session (1 host + 7 guests on video). Up to 1,000 live viewers on the Live plan. Up to 10,000 audience on Business plan for webinars.
+
+Screen Sharing:
+Any participant can share their screen. Captured as its own separate HD track.
+
+Producer Role:
+Full control of the session (camera switching, teleprompter, media board) without being recorded. Available on Business plan.
+
+Media Board:
+Upload and play audio or video files during the recording session.
+
+Teleprompter:
+Built-in with adjustable scroll speed, text size, and focus mode. Host-only on Pro. Host and guests on Business.
+
+
+EDITING AND AI FEATURES
+-----------------------
+
+Text-Based Editor:
+Edit video and audio by editing the transcript, like a Google Doc. Delete a sentence from the transcript and that section is cut from the video. Automatic multi-track sync. Search the transcript to find specific moments.
+
+Magic Clips:
+AI scans the full recording and automatically identifies the most engaging moments. Cuts them into 30-90 second clips optimized for TikTok, Instagram Reels, and YouTube Shorts. Roughly 2 clips per 5 minutes of content.
+
+Magic Audio:
+One-click AI audio enhancement. Removes background noise, reduces echo, and balances audio levels across all speakers.
+
+Co-Creator:
+Conversational AI agent built into the editor. Chat with it to generate clips, thumbnails, newsletters, social posts, and other content from your recording. Example: "make a reel from the part about marketing" or "write a newsletter from this episode."
+
+AI Transcription:
+99% accuracy in 100+ languages with automatic speaker detection. Export as SRT, VTT, or plain text.
+
+AI Captions and Subtitles:
+Auto-generated in 100+ languages. Customizable styles, positioning, and animation.
+
+AI Translation:
+Translate transcripts and captions across languages.
+
+Eye Contact Fix:
+AI adjusts each speaker's eye gaze to appear as if looking directly at the camera.
+
+Filler Word Removal:
+One click removes all ums, uhs, and filler words.
+
+Silence Removal:
+Automatically cuts dead air from recordings.
+
+AI Show Notes:
+Auto-generated summary, key takeaways, and suggested episode title.
+
+
+DISTRIBUTION AND PUBLISHING
+----------------------------
+
+Podcast Hosting:
+Built-in podcast hosting with RSS feed generation. One-click distribution to Apple Podcasts, Spotify, YouTube, and other directories. Unlimited storage on paid plans.
+
+Live Streaming (Live plan and above):
+Simultaneous streaming to YouTube, LinkedIn, Facebook, Instagram, X, Twitch. Custom RTMP destinations supported. Record and stream simultaneously so you get download-ready files after the stream.
+
+Export Formats:
+MP4 (video), MP3 (audio), WAV (uncompressed audio). SRT/VTT/TXT for transcripts. Separate tracks per participant or combined mix.
+
+
+PLATFORM AND ACCESS
+-------------------
+
+Browser-Based:
+Primary platform. Guests join via link, no download required. Chrome recommended for hosting.
+
+Mac Desktop App:
+Native app available for recording.
+
+iOS App:
+iPhone and iPad support.
+
+Android App:
+Available on Google Play.
+
+Windows:
+Browser-based (no desktop app).
+
+Guest Experience:
+Click a link, join in the browser. No account needed, no software to download. Takes about 10 seconds.
+
+
+INTEGRATIONS
+------------
+
+- Spotify for Podcasters (direct publishing)
+- Apple Podcasts, YouTube, and other directories
+- HubSpot CRM (Webinar and Business plans)
+- Salesforce (Business plan)
+- Google Calendar
+- Custom RTMP for streaming
+
+
+SECURITY AND COMPLIANCE
+-----------------------
+
+- SOC 2 Type II certified (Business plan)
+- ISO 27001 certified (Business plan)
+- SSO via Okta and Azure AD (Business plan)
+- Local recording means content is captured on-device first, not streamed through a cloud server
+- Enterprise customers like Microsoft and Disney trust Riverside with their content
+
+
+COMPETITOR COMPARISONS
+----------------------
+
+Riverside vs Zoom:
+Zoom records from the cloud, so quality depends on internet. Riverside records locally at up to 4K, quality is always perfect. Riverside gives separate tracks per participant (Zoom puts everyone on one track). Riverside has built-in editing, transcription, and clip generation. Zoom recordings look and sound like meeting recordings. Riverside recordings look and sound professional.
+
+Riverside vs Squadcast:
+Both record locally for high-quality audio. Riverside adds 4K video, live streaming, and a full editing suite with AI tools. Squadcast is recording-only and now owned by Descript, so you need Descript for editing. Riverside is the all-in-one option.
+
+Riverside vs Descript:
+Descript started as an editor and added recording. Riverside started as a recorder and built editing in. Riverside has stronger recording quality with true local 4K capture. Both offer text-based editing. Descript has more advanced post-production (voice cloning). Riverside has a cleaner, more focused workflow.
+
+Riverside vs StreamYard:
+StreamYard focuses on live streaming with cloud-dependent quality. Riverside does both recording and live streaming with 4K local capture. Riverside has built-in editing and AI tools that StreamYard does not offer.
+
+Riverside vs Zencastr:
+Riverside has superior video quality (4K vs lower resolution) and a more comprehensive feature set including live streaming, AI editing, and clip generation. Zencastr is slightly cheaper and simpler but less complete.
+
+
+CUSTOMERS AND RESULTS
+---------------------
+
+Enterprise customers: Spotify, Microsoft, Disney, The New York Times, iHeartMedia, TED, Netflix, Marvel, NPR.
+
+Mid-market customers: Headspace, Intuit, Wix, Chili Piper, Pega, Chess.com, HubSpot, GE Aerospace, Accenture.
+
+Notable creators: Tim Ferriss, Guy Raz (How I Built This), Gary Vaynerchuk, Jay Shetty, Mel Robbins, Ali Abdaal, Colin & Samir, Jordan Harbinger, Marques Brownlee.
+
+Angel investors who also use the product: Guy Raz, Casey Neistat, Marques Brownlee.
+
+Results:
+- Headspace: 80%+ editing time reduction, 10-15% RSS subscriber growth
+- Spotify: 3x more viewer engagement using Riverside for webinars
+- Over 70,000 creators and brands on the platform
+- 100M+ minutes recorded
+
+
+COMPANY BACKGROUND
+------------------
+
+Founded by Nadav Keyson (still CEO). Raised $80M total including a $30M Series C in December 2024 led by Zeev Ventures, with Seven Seven Six (Alexis Ohanian) and Sam Lessin. 160-170 employees. Over 100 million minutes recorded in 2024.
+
+Recent updates (2025-2026):
+- Co-Creator AI launched (June 2025)
+- iOS app and iPad support (July 2025)
+- Riverside 2.0 overhaul (July 2025)
+- Spotify integration for video podcasts (July 2025)
+- Editor Role and Content Planner (March 2026)
+- SOC 2 Type II compliance (March 2026)
+- Webinar growth push with HubSpot/Salesforce integration (March-April 2026)
+
+
+WEBINAR CAPABILITIES
+--------------------
+
+Riverside's Webinar plan ($79/month annual) is designed for marketing teams running lead generation webinars:
+- Up to 100 registrants (10,000 on Business)
+- Custom branded registration pages
+- Automated email reminders and follow-ups
+- Q&A, polls, reactions, live call-ins
+- Pre-record and stream as live
+- Webinar analytics (attendance, engagement, drop-off)
+- HubSpot integration for lead tracking (Salesforce on Business)
+- Unlimited scheduled sessions with no time limits
+
+Riverside's pitch: most teams use 3-11 separate tools for webinars (hosting, registration, email, streaming, editing, analytics). Riverside consolidates this into one platform.

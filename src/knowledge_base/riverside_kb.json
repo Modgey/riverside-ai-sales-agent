@@ -1,0 +1,227 @@
+{
+  "pricing": [
+    {
+      "keywords": ["price", "cost", "how much", "plan", "plans", "tier", "tiers", "free", "subscription"],
+      "q": "What does Riverside cost?",
+      "a": "Riverside has five plans. Free at $0 with 2 hours of multitrack recording and 720p video. Pro at $24 per month billed annually or $29 monthly, with 4K video, 15 hours of multitrack recording, and all AI tools. Live at $34 per month annual or $39 monthly, adding live streaming and multistreaming. Webinar at $79 per month annual or $99 monthly, with registration pages, lead capture, and HubSpot integration. And Business with custom pricing for enterprise teams."
+    },
+    {
+      "keywords": ["free plan", "free tier", "free version", "try", "trial", "test"],
+      "q": "Is there a free plan or trial?",
+      "a": "Yes. The free plan gives you 2 hours of multitrack recording, 720p video, and unlimited single-track recording. No credit card required. All paid plans also have a 14-day free trial so you can test everything before committing."
+    },
+    {
+      "keywords": ["pro plan", "pro tier", "twenty four", "twenty nine"],
+      "q": "What's included in the Pro plan?",
+      "a": "Pro is $24 per month billed annually or $29 month to month. You get 15 hours of multitrack recording per month, 4K video, 48 kilohertz uncompressed audio, no watermark, AI transcription in over 100 languages, Magic Clips for short-form content, Magic Audio for noise removal, text-based editing, a teleprompter, show notes generation, and publishing to YouTube and podcast directories."
+    },
+    {
+      "keywords": ["live plan", "live tier", "streaming", "live stream", "thirty four", "thirty nine"],
+      "q": "What's the Live plan?",
+      "a": "Live is $34 per month annual or $39 monthly. It includes everything in Pro plus full HD live streaming to YouTube, Facebook, LinkedIn, Instagram, X, and Twitch simultaneously. You also get custom RTMP support, a unified live chat across platforms, live call-ins from your audience, custom overlays, lower thirds, and backstage speaker management."
+    },
+    {
+      "keywords": ["webinar", "webinar plan", "webinar tier", "seventy nine", "ninety nine", "registration", "lead capture"],
+      "q": "What's the Webinar plan?",
+      "a": "Webinar is $79 per month annual or $99 monthly. Everything in Live, plus hosting webinars with up to 100 registrants, custom branded registration forms, automated email reminders and follow-ups, Q&A, polls, reactions, webinar analytics, and HubSpot integration for lead tracking. You can also pre-record content and stream it as if it's live."
+    },
+    {
+      "keywords": ["business", "enterprise", "custom", "sso", "salesforce", "soc2", "security", "compliance"],
+      "q": "What about enterprise or Business plans?",
+      "a": "The Business plan has custom pricing and includes everything in Webinar plus up to 10,000 webinar registrants, unlimited multitrack recording and storage, Salesforce integration, API access, SSO through Okta or Azure, SOC2 Type II and ISO 27001 certification, a dedicated customer success manager, 24/7 priority support, and customized onboarding."
+    },
+    {
+      "keywords": ["annual", "yearly", "discount", "save"],
+      "q": "Is there a discount for annual billing?",
+      "a": "Yes, you save about 17 to 20 percent with annual billing. Pro drops from $29 to $24 per month, Live from $39 to $34, and Webinar from $99 to $79."
+    }
+  ],
+  "recording": [
+    {
+      "keywords": ["quality", "resolution", "4k", "video quality", "audio quality", "recording quality"],
+      "q": "What's the recording quality?",
+      "a": "Riverside records locally on each participant's device, so your quality doesn't depend on internet connection at all. On paid plans you get up to 4K video and 48 kilohertz uncompressed WAV audio. Even if someone's WiFi drops during the recording, the local file is still perfect quality. The free plan records at 720p."
+    },
+    {
+      "keywords": ["local recording", "internet", "connection", "wifi", "lag", "buffer"],
+      "q": "How does local recording work?",
+      "a": "Instead of recording from the cloud like Zoom does, Riverside captures video and audio directly on each participant's device. The files upload in the background. This means your recording quality is completely independent of internet speed. Even if someone's connection is unstable, the final recording is crystal clear."
+    },
+    {
+      "keywords": ["tracks", "separate tracks", "multitrack", "individual", "iso"],
+      "q": "Do I get separate tracks per participant?",
+      "a": "Yes. Riverside gives you a separate audio and video track for each participant, plus screen share as its own track. This makes editing much easier because you can adjust levels, cut sections, or fix issues for one person without affecting the others."
+    },
+    {
+      "keywords": ["participants", "guests", "how many people", "limit", "capacity"],
+      "q": "How many participants can join a recording?",
+      "a": "Up to 8 participants per recording session, that's 1 host plus 7 guests. For live streaming, you can have up to 1,000 viewers on the Live plan, and up to 10,000 on the Business plan for webinars."
+    },
+    {
+      "keywords": ["screen share", "screen sharing", "presentation", "slides"],
+      "q": "Can participants share their screen?",
+      "a": "Yes, any participant can share their screen during a recording. The screen share is captured as its own separate HD track, so you can edit it independently from the camera feeds."
+    },
+    {
+      "keywords": ["teleprompter", "script", "notes"],
+      "q": "Is there a teleprompter?",
+      "a": "Yes. Riverside has a built-in teleprompter with adjustable scroll speed, text size, and a focus mode. On Pro it's available for the host. On Business plans, guests can use it too."
+    }
+  ],
+  "editing": [
+    {
+      "keywords": ["edit", "editing", "editor", "text-based", "post-production"],
+      "q": "What editing tools does Riverside have?",
+      "a": "Riverside has a full text-based editor built in. You edit your video by editing the transcript, like a Google Doc. Delete a sentence from the transcript and that section is cut from the video. You can also remove filler words and silence with one click, search the transcript to find specific moments, and all tracks stay in sync automatically."
+    },
+    {
+      "keywords": ["magic clips", "clips", "short form", "shorts", "reels", "tiktok", "social media"],
+      "q": "What are Magic Clips?",
+      "a": "Magic Clips is an AI feature that scans your full recording and automatically identifies the most engaging moments. It cuts them into 30 to 90 second clips optimized for TikTok, Instagram Reels, and YouTube Shorts. You get roughly 2 clips per 5 minutes of recording. It saves hours of manual clip selection."
+    },
+    {
+      "keywords": ["magic audio", "noise", "echo", "sound", "audio fix", "audio quality", "background noise"],
+      "q": "What does Magic Audio do?",
+      "a": "Magic Audio is a one-click AI audio enhancement. It removes background noise, reduces echo, and balances audio levels across all speakers. It's like having a professional audio engineer clean up your recording instantly."
+    },
+    {
+      "keywords": ["co-creator", "ai assistant", "repurpose", "newsletter", "blog", "social post"],
+      "q": "What is Co-Creator?",
+      "a": "Co-Creator is Riverside's conversational AI agent built into the editor. You can chat with it and ask things like 'make a reel from the part about marketing' or 'write a newsletter from this episode' and it generates the output. It can create clips, thumbnails, social posts, newsletters, and other content from your recording."
+    },
+    {
+      "keywords": ["transcription", "transcript", "captions", "subtitles", "srt"],
+      "q": "Does Riverside do transcription?",
+      "a": "Yes. Riverside offers AI transcription with about 99 percent accuracy in over 100 languages, with automatic speaker detection. You can export transcripts as SRT, VTT, or plain text. The captions are customizable with different styles and animations, and you can translate them across languages."
+    },
+    {
+      "keywords": ["eye contact", "gaze", "looking at camera"],
+      "q": "What is the eye contact fix?",
+      "a": "It's an AI feature that adjusts each speaker's eye gaze to make it look like they're looking directly at the camera. Useful when someone is reading notes or looking at a second monitor during the recording."
+    },
+    {
+      "keywords": ["filler", "um", "uh", "silence", "remove"],
+      "q": "Can Riverside remove filler words?",
+      "a": "Yes. One click removes all ums, uhs, and filler words from the recording. There's also a separate silence removal feature that cuts dead air. Both save significant editing time."
+    },
+    {
+      "keywords": ["show notes", "summary", "takeaways", "episode title"],
+      "q": "Does Riverside generate show notes?",
+      "a": "Yes. The AI automatically generates a summary, key takeaways, and a suggested episode title for each recording. You can use these directly or edit them before publishing."
+    }
+  ],
+  "distribution": [
+    {
+      "keywords": ["publish", "distribute", "spotify", "apple", "youtube", "podcast hosting", "rss"],
+      "q": "Can I publish my podcast from Riverside?",
+      "a": "Yes. Riverside has built-in podcast hosting with RSS feed generation. You can publish directly to Apple Podcasts, Spotify, YouTube, and other directories with one click. Unlimited storage is included on paid plans."
+    },
+    {
+      "keywords": ["live stream", "multistream", "go live", "broadcast", "rtmp"],
+      "q": "Can I live stream with Riverside?",
+      "a": "Yes, on the Live plan and above. You can stream simultaneously to YouTube, LinkedIn, Facebook, Instagram, X, and Twitch. Custom RTMP destinations are also supported. You record and stream at the same time, so you get download-ready files after the stream ends."
+    },
+    {
+      "keywords": ["export", "download", "format", "mp4", "mp3", "wav"],
+      "q": "What formats can I export in?",
+      "a": "MP4 for video, MP3 or WAV for audio, and SRT or VTT for transcripts. You can export separate tracks per participant or a combined mix."
+    }
+  ],
+  "platform": [
+    {
+      "keywords": ["download", "install", "app", "browser", "desktop", "mobile", "iphone", "android", "mac", "windows"],
+      "q": "Do I need to download anything?",
+      "a": "Riverside works in the browser, so guests just click a link to join, no download needed. There's also a Mac desktop app, an iOS app for iPhone and iPad, and an Android app. On Windows you use the browser."
+    },
+    {
+      "keywords": ["guest", "join", "invite", "link", "easy"],
+      "q": "How do guests join?",
+      "a": "Guests click a link and join directly in their browser. No account needed, no software to download. It takes about 10 seconds to get in."
+    }
+  ],
+  "comparisons": [
+    {
+      "keywords": ["zoom", "vs zoom", "compared to zoom", "better than zoom", "different from zoom", "switch from zoom"],
+      "q": "How is Riverside different from Zoom?",
+      "a": "Zoom records from the cloud, so quality depends on everyone's internet connection. Riverside records locally on each device at up to 4K, so quality is always perfect regardless of connection. Riverside also gives you separate tracks per participant for easy editing, plus built-in AI editing tools, transcription, and clip generation. Zoom records everyone on a single track which makes individual editing nearly impossible."
+    },
+    {
+      "keywords": ["squadcast", "vs squadcast", "compared to squadcast"],
+      "q": "How does Riverside compare to Squadcast?",
+      "a": "Both record locally for high quality audio. Riverside adds 4K video recording, built-in live streaming, and a full editing suite with AI tools. Squadcast is recording-only, so you need a separate tool like Descript for editing. Riverside is the all-in-one option."
+    },
+    {
+      "keywords": ["descript", "vs descript", "compared to descript"],
+      "q": "How does Riverside compare to Descript?",
+      "a": "Descript started as an editor and added recording later. Riverside started as a recording platform and built editing in. Riverside's recording quality is stronger, with true local 4K capture and separate tracks. Both offer text-based editing. Descript has more advanced post-production features like voice cloning. Riverside has a cleaner, more focused workflow for podcasters and content creators."
+    },
+    {
+      "keywords": ["streamyard", "vs streamyard", "compared to streamyard"],
+      "q": "How does Riverside compare to StreamYard?",
+      "a": "StreamYard focuses on live streaming. Riverside does both recording and live streaming with much higher recording quality, 4K local capture versus StreamYard's cloud-dependent quality. Riverside also has built-in editing and AI tools that StreamYard doesn't offer."
+    },
+    {
+      "keywords": ["zencastr", "vs zencastr", "compared to zencastr"],
+      "q": "How does Riverside compare to Zencastr?",
+      "a": "Riverside offers superior video quality at 4K versus Zencastr's lower resolution, plus a more comprehensive feature set including live streaming, AI editing, and clip generation. Zencastr is slightly cheaper and simpler, but Riverside is the more complete platform."
+    },
+    {
+      "keywords": ["competitor", "alternative", "other tools", "other options", "what else"],
+      "q": "What are the main alternatives to Riverside?",
+      "a": "The main alternatives are Zoom for basic recording, Squadcast for audio-focused podcasting, Descript for editing-first workflows, StreamYard for live streaming, and Zencastr as a budget option. Riverside stands out as the most complete all-in-one platform combining studio-quality recording, editing, live streaming, and AI tools."
+    }
+  ],
+  "customers": [
+    {
+      "keywords": ["who uses", "customers", "clients", "case study", "examples", "brands"],
+      "q": "Who uses Riverside?",
+      "a": "Riverside is used by over 70,000 creators and brands. Enterprise customers include Spotify, Microsoft, Disney, The New York Times, iHeartMedia, and TED. Mid-market companies like Headspace, Wix, Chili Piper, and HubSpot use it for podcasts and webinars. Top creators include Tim Ferriss, Guy Raz, Gary Vaynerchuk, Ali Abdaal, and Marques Brownlee. Guy Raz, Casey Neistat, and Marques Brownlee are also angel investors."
+    },
+    {
+      "keywords": ["result", "roi", "success", "outcome", "headspace"],
+      "q": "What results do customers get?",
+      "a": "Headspace cut their editing time by over 80 percent and saw 10 to 15 percent growth in RSS subscribers after switching to Riverside. Spotify used Riverside for webinars and achieved 3 times more viewer engagement. Many podcasters report saving hours per episode by using Magic Clips and text-based editing instead of manual post-production."
+    }
+  ],
+  "webinars": [
+    {
+      "keywords": ["webinar", "webinars", "virtual event", "registration", "lead gen", "lead generation"],
+      "q": "Can Riverside host webinars?",
+      "a": "Yes. The Webinar plan at $79 per month annual lets you host webinars with up to 100 registrants, with custom branded registration forms, automated email reminders and follow-ups, Q&A, polls, reactions, and live call-ins. You get webinar analytics and HubSpot integration for lead tracking. The Business plan supports up to 10,000 registrants with Salesforce integration."
+    },
+    {
+      "keywords": ["hubspot", "crm", "integration", "leads", "salesforce"],
+      "q": "Does Riverside integrate with CRMs?",
+      "a": "Yes. The Webinar plan includes HubSpot integration for tracking webinar registrants as leads. The Business plan adds Salesforce integration. Registration data, attendance, and engagement metrics flow directly into your CRM."
+    },
+    {
+      "keywords": ["pre-record", "pre recorded", "on demand"],
+      "q": "Can I pre-record a webinar?",
+      "a": "Yes. On the Webinar plan you can pre-record your content and stream it as if it's live. Your audience gets the live experience with chat, Q&A, and polls, while you've already perfected the content."
+    }
+  ],
+  "security": [
+    {
+      "keywords": ["secure", "security", "soc", "iso", "compliant", "compliance", "data", "privacy", "gdpr"],
+      "q": "Is Riverside secure and compliant?",
+      "a": "Yes. Riverside has SOC 2 Type II and ISO 27001 certifications on the Business plan. They support SSO through Okta and Azure AD. Local recording means your content is captured on-device first, not streamed through a cloud server. Enterprise customers like Microsoft and Disney trust Riverside with their content."
+    }
+  ],
+  "general": [
+    {
+      "keywords": ["what is riverside", "tell me about riverside", "who is riverside", "about riverside"],
+      "q": "What is Riverside?",
+      "a": "Riverside is a studio-quality recording, editing, and distribution platform. It records locally on each participant's device at up to 4K video and 48 kilohertz audio, so quality doesn't depend on internet. It has built-in AI editing tools, transcription, clip generation, live streaming, podcast hosting, and webinar capabilities. Over 70,000 creators and brands use it, including Spotify, Disney, Tim Ferriss, and Guy Raz."
+    },
+    {
+      "keywords": ["founded", "company", "history", "team", "funding", "investors"],
+      "q": "Tell me about Riverside as a company.",
+      "a": "Riverside was founded by Nadav Keyson, who is still CEO. They've raised $80 million total, including a $30 million Series C led by Zeev Ventures, with backing from Alexis Ohanian's Seven Seven Six fund. They have about 160 to 170 employees and have recorded over 100 million minutes on the platform."
+    },
+    {
+      "keywords": ["new", "latest", "recent", "update", "2026", "2025", "what's new"],
+      "q": "What's new at Riverside?",
+      "a": "Recent additions include Co-Creator, an AI creative partner for repurposing content into clips, newsletters, and social posts. They launched an iOS app for mobile recording, added iPad support, and released Riverside 2.0 with automated editing and improved transcriptions. In March 2026 they added team collaboration features like an Editor Role, Content Planner, and Professional Directory. They also achieved SOC 2 Type II compliance and are pushing hard into the webinar space with HubSpot integration."
+    }
+  ]
+}

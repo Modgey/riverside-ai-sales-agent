@@ -24,11 +24,9 @@ CONFIG = load_config()
 
 
 class CallContextResponse(BaseModel):
-    opening_line: str
-    pain_hypotheses: list[str]
-    objections: list[str]
-    riverside_hooks: list[str]
-    narrative_briefing: str
+    opener: str
+    prospect_context: str
+    personalized_angles: list[str]
 
 
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
@@ -82,10 +80,15 @@ def call_llm_context(prospect: ProspectDict) -> CallContextResponse | None:
             timeout=45,
         )
         resp.raise_for_status()
-        content = resp.json()["choices"][0]["message"]["content"]
+        data = resp.json()
+        content = data["choices"][0]["message"]["content"]
+        if not content:
+            finish = data["choices"][0].get("finish_reason", "unknown")
+            raise ValueError(f"Empty LLM response (finish_reason={finish})")
         parsed = json.loads(content)
         return CallContextResponse(**parsed)
-    except Exception:
+    except Exception as e:
+        print(f"    LLM error for {prospect.get('podcast_name', '?')}: {e}")
         return None
 
 
@@ -148,11 +151,9 @@ if __name__ == "__main__":
                 ctx = p.get("call_context")
                 if ctx:
                     parsed = json.loads(ctx)
-                    print(f"  Opening: {parsed.get('opening_line', 'N/A')}")
-                    print(f"  Pains: {parsed.get('pain_hypotheses', [])}")
-                    print(f"  Objections: {parsed.get('objections', [])}")
-                    print(f"  Hooks: {parsed.get('riverside_hooks', [])}")
-                    print(f"  Briefing: {parsed.get('narrative_briefing', 'N/A')}")
+                    print(f"  Opener: {parsed.get('opener', 'N/A')}")
+                    print(f"  Context: {parsed.get('prospect_context', 'N/A')}")
+                    print(f"  Angles: {parsed.get('personalized_angles', [])}")
                 else:
                     print("  No call context generated (LLM failed)")
 

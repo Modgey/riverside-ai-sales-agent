@@ -66,13 +66,13 @@ def score_and_filter(
         company = prospect.get("company_name", "").lower()
 
         if domain in skip_domains or company in skip_names:
-            prospect["status"] = "skipped"
+            prospect["status"] = "Skipped"
             prospect["score"] = 0
             skipped += 1
             continue
 
         if prospect.get("enrichment_status") == "enrichment-failed":
-            prospect["status"] = "disqualified"
+            prospect["status"] = "Disqualified"
             prospect["disqualify_reason"] = "enrichment_failed"
             prospect["score"] = 0
             disqualified += 1
@@ -80,7 +80,7 @@ def score_and_filter(
 
         cadence = prospect.get("cadence_days")
         if cadence is None or cadence > 90:
-            prospect["status"] = "disqualified"
+            prospect["status"] = "Disqualified"
             prospect["disqualify_reason"] = "inactive_or_infrequent_show"
             prospect["score"] = 0
             disqualified += 1
@@ -88,7 +88,7 @@ def score_and_filter(
 
         email = prospect.get("work_email")
         if not email:
-            prospect["status"] = "disqualified"
+            prospect["status"] = "Disqualified"
             prospect["disqualify_reason"] = "no_contact_info"
             prospect["score"] = 0
             disqualified += 1
@@ -104,13 +104,13 @@ def score_and_filter(
         prospect["score"] = round(total)
 
         if total >= 40:
-            prospect["status"] = "call-ready"
+            prospect["status"] = "Qualified"
             call_ready += 1
         else:
-            prospect["status"] = "below-threshold"
+            prospect["status"] = "Nurture"
             below_threshold += 1
 
-    print(f"  Scoring complete: {call_ready} call-ready, {below_threshold} below-threshold, {disqualified} disqualified, {skipped} skipped")
+    print(f"  Scoring complete: {call_ready} Qualified, {below_threshold} Nurture, {disqualified} Disqualified, {skipped} Skipped")
     return prospects
 
 
