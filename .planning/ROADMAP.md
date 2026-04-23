@@ -80,12 +80,13 @@ Plans:
   3. When a test caller expresses interest, the agent fires the book_meeting tool call and the Calendly link arrives within the call or immediately after
   4. After the call ends, the Airtable row for that prospect is updated with an outcome classification (booked, interested, not-a-fit, voicemail, no-answer, or do-not-call), call notes, and a timestamp
   5. The harness system prompt is identical across all test calls; only the variableValues block changes per call
-**Plans**: 3 plans
+**Plans**: 4 plans
 
 Plans:
 - [x] 03-01-PLAN.md -- Harness prompt, Vapi voice agent config, ProspectDict extension
 - [x] 03-02-PLAN.md -- Outcome handler, Airtable field mapping, env var setup
 - [x] 03-03-PLAN.md -- Tool server, call runner CLI, pipeline wiring, live call verification
+- [ ] 03-04-PLAN.md -- Strategic reframe: voice agent from closer to qualifier with soft close
 
 ### Phase 4: Demos and Write-up
 **Goal**: The submission is complete with recorded demo calls covering distinct scenarios and a write-up that explains the system, defends decisions, and demonstrates strategic thinking
@@ -107,5 +108,5 @@ Phases execute in numeric order: 1 -> 1.1 -> 2 -> 3 -> 4
 | 1. Prospect Pipeline | 3/3 | Done | 2026-04-22 |
 | 1.1. Deep Enrichment (INSERTED) | 2/2 | Done | 2026-04-22 |
 | 2. Call Context Generation | 2/2 | Done | 2026-04-23 |
-| 3. Voice Agent and Outcome Handling | 3/3 | Done | 2026-04-23 |
+| 3. Voice Agent and Outcome Handling | 3/4 | In Progress | - |
 | 4. Demos and Write-up | 0/TBD | Not started | - |
